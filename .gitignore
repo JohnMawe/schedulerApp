@@ -1,2 +1,4 @@
 venv\
 data\tasks.json
+scheduler\__pycache__
+__pychache__
