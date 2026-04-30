@@ -1,8 +1,9 @@
 import json
 from scheduler.task import Task
 from pathlib import Path
-from datetime import datetime, timedelta
 #from reminders import check_reminders
+from utilities.time_key import now_timestamp
+from utilities.files_utili import backup_file, cleanup_backups
 
 class TaskManager:
     def __init__(self):
@@ -39,9 +40,9 @@ class TaskManager:
         else:
             return self.tasks
             
-    
+   
     def update_task(self, task_Id, new_title=None, new_start_time=None, new_end_time=None, new_note=None):
-        time_now = datetime.now()
+        time_now = now_timestamp()
         
         for task in self.tasks:
             if task.Id == task_Id:
@@ -54,7 +55,7 @@ class TaskManager:
                     task.title = new_title
 
                 if new_start_time:
-                    task.start_time = datetime.strptime(new_start_time, "%Y-%m-%d %H:%M")
+                    task.start_time = new_start_time
                     
                     task.notified = {
                         "reminder": False,
@@ -63,7 +64,7 @@ class TaskManager:
                     }
 
                 if new_end_time:
-                    task.end_time = datetime.strptime(new_end_time, "%Y-%m-%d %H:%M")
+                    task.end_time = new_end_time
 
                 if new_note:
                     task.note = new_note
@@ -87,9 +88,23 @@ class TaskManager:
   
     def save_task(self):
         self.filePath.parent.mkdir(parents=True, exist_ok=True)
+        temp_file = self.filePath.with_suffix(".temp")
+        
+        if temp_file.exists():
+            temp_file.unlink()
+        
         data = [task.to_dict() for task in self.tasks]
-        with self.filePath.open ("w", encoding='utf-8') as myfile:
-            json.dump(data, myfile, indent=4)
+        try:
+            with temp_file.open ("w", encoding='utf-8') as myfile:
+                json.dump(data, myfile, indent=4)
+            temp_file.replace(self.filePath)
+        except Exception as error:
+            print("Faield to Save", error)
+            
+    def _create_empty_file(self):
+        self.filePath.parent.mkdir(parents=True, exist_ok=True)
+        with self.filePath.open("w", encoding="utf-8") as myfile:
+            myfile.write("[]")
                 
     def load_tasks(self):
         try:
@@ -115,6 +130,12 @@ class TaskManager:
             self.next_Id = max([tsk.Id for tsk in self.tasks], default=0) + 1
 
         except (FileNotFoundError, json.JSONDecodeError):
+            try:
+                backup_file(self.filePath)
+                cleanup_backups(self.filePath.parent)
+                self._create_empty_file()
+            except Exception as error:
+                print("Backup Faield", error)
             self.tasks = []
             self.next_Id = 1
   

@@ -1,5 +1,6 @@
 import time
-from datetime import datetime, timedelta
+from utilities.time_key import str_to_timestamp, now_timestamp
+from utilities.helpers import UI_divider
 from scheduler.task_manager import TaskManager
 from scheduler.reminders import check_reminders
 from scheduler.task import Task
@@ -8,11 +9,11 @@ def get_datetime():
     while True:
         try:
             dateTime = input("Enter date and time (YYYY-MM-DD HH:MM): ").strip()
-            dateTime_objc = datetime.strptime(dateTime, "%Y-%m-%d %H:%M")
-            if dateTime_objc <= datetime.now():
+            dateTime = str_to_timestamp(dateTime)
+            if dateTime <= now_timestamp():
                 print("Date must be greater or equal to today's date")
                 raise ValueError 
-            return dateTime, dateTime_objc
+            return dateTime
         
         except ValueError as error:
             print(error)
@@ -53,7 +54,7 @@ def get_new_title():
 def get_new_datetime(string):
     choice = input(f"\nSkip {string} time? (Y/N)").strip()
     if choice.lower() == "n":
-        date_time, _ = get_datetime()
+        date_time = get_datetime()
         return date_time
     return None
         
@@ -68,10 +69,14 @@ def get_new_note():
 def main():
     manager = TaskManager()
 
-    print("🚀 CLI Scheduler App Runing...")
+    print("🚀 CLI Scheduler App Runing...\n")
 
     while True:
-        print("\n1. Add Task")
+        print(UI_divider("Notification"))
+        check_reminders(manager.tasks)
+        
+        print(f"\n{UI_divider("Menu")}")
+        print("1. Add Task")
         print("2. View Tasks")
         print("3. Update Task")
         print("4. Delete Task")
@@ -81,17 +86,17 @@ def main():
 
         # Add Task
         if choice == "1":
-            print(f"\n{'-'*10}Add Task{'-'*10}")
+            print(f"\n{UI_divider("Add Task")}")
             
             title = input("Task Title: ").strip()
             
             while True:
                 print("\nStart time >>")
-                start, start_objc = get_datetime()
+                start = get_datetime()
                 print("\nEnd time >>")
-                end, end_objc = get_datetime()
+                end = get_datetime()
                 
-                if start_objc < end_objc:
+                if start < end:
                     break
                 else:
                     print("Start time must be before End time. Try again...\n")
@@ -125,7 +130,7 @@ def main():
                         print("\nInvalid Value. ID should be a number") 
                     
                 elif choice == "2":
-                    print(f"{'-'*10}All Tasks{'-'*10}")
+                    print(UI_divider("All Tasks"))
                     for task in manager.get_task():
                         print(f"\n{task}")
                         
@@ -165,8 +170,6 @@ def main():
             print("Exiting...")
             break
 
-        # 🔥 automatic background check every loop
-        check_reminders(manager.tasks)
         manager.save_task()
 
         time.sleep(1)

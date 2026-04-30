@@ -1,26 +1,13 @@
 [
     {
         "Id": 1,
-        "title": "Create File Converter",
-        "start_time": "2026-05-15 08:00",
-        "end_time": "2026-06-15 08:00",
-        "reminder_before": 15,
-        "note": "Main Goal make it simple and usefull. No exception",
+        "title": "make",
+        "start_time": 1777466940,
+        "end_time": 1777467000,
+        "reminder_before": 1,
+        "note": "ma",
         "notified": {
-            "reminder": false,
-            "in_progress": false,
-            "completed": false
-        }
-    },
-    {
-        "Id": 2,
-        "title": "Create Chama Managment Website",
-        "start_time": "2026-06-15 08:00",
-        "end_time": "2026-07-15 08:01",
-        "reminder_before": 60,
-        "note": "Basicaly the website will track usergroup contribution, automate notification, manage payment (by ddirectpayment from the platform)",
-        "notified": {
-            "reminder": false,
+            "reminder": true,
             "in_progress": false,
             "completed": false
         }
