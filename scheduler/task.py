@@ -1,9 +1,16 @@
 from utilities.time_key import str_to_timestamp, timestamp_to_local
 
 class Task:
-    def __init__(self, title, start_time, end_time, note,reminder_before=0, Id=None, notified=None):
+    def __init__(self, title, start_time: int, end_time: int, note,reminder_before=0, Id=None, notified=None):
         self.Id = Id
         self.title = title
+        
+        if not isinstance(start_time, int):
+            raise TypeError("start time must be time stamp")
+            
+        if not isinstance(end_time, int):
+            raise TypeError("start time must be time stamp")
+            
         self.start_time = start_time
         self.end_time = end_time
 

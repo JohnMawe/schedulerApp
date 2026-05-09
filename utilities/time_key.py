@@ -7,6 +7,10 @@ def now_timestamp():
     now = datetime.now(timezone.utc)
     return int(now.timestamp())
 
+# return datetime now in datetime objc
+def now_datetime():
+    return datetime.now()
+    
 # convert datetime string to timestamp in UTC timezone
 def str_to_timestamp(date_str):
     local_dt = datetime.strptime(date_str, FORMAT)

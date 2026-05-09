@@ -4,13 +4,19 @@ from pathlib import Path
 #from reminders import check_reminders
 from utilities.time_key import now_timestamp
 from utilities.files_utili import backup_file, cleanup_backups
+from utilities.helpers import fail_message, success_message
 
 class TaskManager:
-    def __init__(self):
+    def __init__(self, filePath=None):
         self.tasks = []
         self.next_Id = 1
-        BASE_DIR = Path(__file__).resolve().parent.parent
-        self.filePath = BASE_DIR/"data"/"tasks.json"
+        
+        if filePath:
+            self.filePath = Path(filePath)
+        else:
+            BASE_DIR = Path(__file__).resolve().parent.parent
+            self.filePath = BASE_DIR/"data"/"tasks.json"
+            
         self.load_tasks()
     
     def __str__(self):
@@ -28,28 +34,46 @@ class TaskManager:
         task.Id = self.next_Id
         self.tasks.append(task)
         self.next_Id += 1
-        self.save_task()
-        return "Task saved successfully"
+        save_task = self.save_task()
+        if not save_task["success"]:
+            return save_task
+            
+        message = f"{task.Id} saved successfully"
+        return success_message(message)
   
     def get_task(self, task_Id=None):
         if task_Id:
             for task in self.tasks:
                 if task.Id == task_Id:
-                    return task
-            return f"Error: Task with ID: {task_Id} dose not exist"
+                    data = task
+                    message = f"Got task: {task.Id}"
+                    return success_message(message, data)
+                    
+            message = f"Task with ID: {task_Id} dose not exist"
+            return fail_message(message)
+            
         else:
-            return self.tasks
+            data = self.tasks
+            message = "Got all Tasks"
+            return success_message(message, data)
             
    
-    def update_task(self, task_Id, new_title=None, new_start_time=None, new_end_time=None, new_note=None):
-        time_now = now_timestamp()
+    def update_task(self, task_Id, new_title=None, new_start_time=None, new_end_time=None, new_note=None, current_time=None):
         
+        if current_time:
+            time_now = current_time
+        else:
+            time_now = now_timestamp()
+            
         for task in self.tasks:
             if task.Id == task_Id:
                 if time_now >= task.end_time:
-                    return "Error: Task completed can't be modified."
+                    message = "Task completed can't be modified."
+                    return fail_message(message)
+                    
                 elif task.start_time <= time_now < task.end_time:
-                    return "Error: Task in progress can't be modified."
+                    message = "Task in progress can't be modified."
+                    return fail_message(message)
                 
                 if new_title:
                     task.title = new_title
@@ -70,12 +94,16 @@ class TaskManager:
                     task.note = new_note
 
                 if task.start_time >= task.end_time:
-                    return "Invalid time range"
+                    message = "Invalid time range"
+                    return fail_message(message)
 
                 self.save_task()
-                return "Task updated successfully"
+                message = "Task updated successfully"
+                return success_message(message)
 
-        return f"{task_Id} does not exist"
+
+        message = f"{task_Id} does not exist"
+        return fail_message(message)
         
   
     def remove_task(self, task_Id):
@@ -83,8 +111,11 @@ class TaskManager:
             if task.Id == task_Id:
                 self.tasks.remove(task)
                 self.save_task()
-                return True
-        return False
+                message = f"{task_Id} deleted successfully"
+                return success_message(message)
+
+        message = f"Failed to delete {task_Id}"
+        return fail_message(message)
   
     def save_task(self):
         self.filePath.parent.mkdir(parents=True, exist_ok=True)
@@ -98,8 +129,12 @@ class TaskManager:
             with temp_file.open ("w", encoding='utf-8') as myfile:
                 json.dump(data, myfile, indent=4)
             temp_file.replace(self.filePath)
+            message = "Saved successfully"
+            return success_message(message)
+            
         except Exception as error:
-            print("Faield to Save", error)
+            message = f"Faield to Save data: {error}"
+            return fail_message(message)
             
     def _create_empty_file(self):
         self.filePath.parent.mkdir(parents=True, exist_ok=True)
@@ -129,17 +164,30 @@ class TaskManager:
             
             self.next_Id = max([tsk.Id for tsk in self.tasks], default=0) + 1
 
-        except (FileNotFoundError, json.JSONDecodeError):
+        except json.JSONDecodeError as error:
             try:
+                print(f"Data corruption detected. Backup in progress {error}")
                 backup_file(self.filePath)
                 cleanup_backups(self.filePath.parent)
                 self._create_empty_file()
+                
             except Exception as error:
-                print("Backup Faield", error)
+                print(f"Backup Faield {error}")
+                #preserved for logging sys
+                #message = f"Backup Faield {error}"
+                #fail_message(message)
             self.tasks = []
             self.next_Id = 1
+        
+        except FileNotFoundError as error:
+            print(f"Data Loading Faield {error}")
+            # preserved for logging sys
+            #message = f"Backup Faield {error}"
+            #fail_message(message)
+            self._create_empty_file()
+            self.task = []
+            self.next_Id = 1
   
-
 if __name__ == "__main__":
     manager = TaskManager()
     print(manager)

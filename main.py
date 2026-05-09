@@ -5,6 +5,7 @@ from scheduler.task_manager import TaskManager
 from scheduler.reminders import check_reminders
 from scheduler.task import Task
 
+# Get all user data safely
 def get_datetime():
     while True:
         try:
@@ -65,7 +66,7 @@ def get_new_note():
         return new_note
     return None    
 
-
+#=================== M A I N ========================
 def main():
     manager = TaskManager()
 
@@ -73,7 +74,9 @@ def main():
 
     while True:
         print(UI_divider("Notification"))
-        check_reminders(manager.tasks)
+        notifications = check_reminders(manager.tasks)
+        for notification in notifications:
+            print(notification)
         
         print(f"\n{UI_divider("Menu")}")
         print("1. Add Task")
@@ -105,10 +108,11 @@ def main():
             reminder = get_reminder()
 
             task = Task(title, start, end, note, reminder)
-            try:
-                print(manager.add_task(task))
-            except ValueError as error:
-                print(error)
+            add_task = manager.add_task(task)
+            if add_task["success"]:
+                print(add_task["message"])
+            else:
+                print(add_task["message"])
 
         # View Task
         elif choice == "2":
@@ -124,14 +128,20 @@ def main():
                 if choice == "1":
                     try:
                         task_id = int(input("\nEnter task ID number: "))
-                        print(f"\n{manager.get_task(task_id)}")
+                        get_task = manager.get_task(task_id)
+                        if get_task["success"]:
+                            print(f"{get_task['message']}\n{get_task['data']}")
+                        else:
+                            print(get_task["message"])
             
                     except ValueError:
                         print("\nInvalid Value. ID should be a number") 
                     
                 elif choice == "2":
+                    get_task = manager.get_task()
+                    all_task = get_task["data"]
                     print(UI_divider("All Tasks"))
-                    for task in manager.get_task():
+                    for task in all_task:
                         print(f"\n{task}")
                         
                 elif choice == "3":
@@ -148,22 +158,26 @@ def main():
                 "new_note": get_new_note()
             }
 
-            print(f"\n{manager.update_task(
+            task_updated = manager.update_task(
                 data['task_Id'], 
                 data['new_title'], 
                 data['new_start_time'], 
                 data['new_end_time'], 
                 data['new_note']
-            )}")
+            )
+            if task_updated["success"]:
+                print(f"\n{task_updated['message']}")
+            else:
+                print(f"\n{task_updated['message']}")
             
         # Delete Task   
         elif choice == "4":
             task_id = get_id()
             task_removed = manager.remove_task(task_id)
-            if task_removed:
-                print(f"\nTask {task_id} deleted successfully")
+            if task_removed["success"]:
+                print(f"\n{task_removed['message']}")
             else:
-                print(f"\nTask {task_id} does not exist")
+                print(f"\n{task_removed['message']}")
             
 
         elif choice == "6":

@@ -1,0 +1,12 @@
+distlib==0.4.0
+filelock==3.25.2
+iniconfig==2.3.0
+packaging==26.2
+platformdirs==4.9.4
+pluggy==1.6.0
+Pygments==2.20.0
+pytest==9.0.3
+python-discovery==1.2.2
+style==1.1.0
+update==0.0.1
+virtualenv==21.2.0
