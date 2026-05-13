@@ -5,6 +5,7 @@ from pathlib import Path
 from utilities.time_key import now_timestamp
 from utilities.files_utili import backup_file, cleanup_backups
 from utilities.helpers import fail_message, success_message
+from utilities.recovery_logger import write_log
 
 class TaskManager:
     def __init__(self, filePath=None):
@@ -53,7 +54,7 @@ class TaskManager:
             return fail_message(message)
             
         else:
-            data = self.tasks
+            data = self.tasks.copy()
             message = "Got all Tasks"
             return success_message(message, data)
             
@@ -134,6 +135,7 @@ class TaskManager:
             
         except Exception as error:
             message = f"Faield to Save data: {error}"
+            write_log("ERROR", message)
             return fail_message(message)
             
     def _create_empty_file(self):
@@ -166,24 +168,22 @@ class TaskManager:
 
         except json.JSONDecodeError as error:
             try:
-                print(f"Data corruption detected. Backup in progress {error}")
+                write_log("INFO", f"Data corruption detected\n Error: {error}")
+                
                 backup_file(self.filePath)
+                write_log("INFO", f"Backup created for {self.filePath.name}")
+                
                 cleanup_backups(self.filePath.parent)
                 self._create_empty_file()
+                write_log("INFO", "Empty task file recreated")
                 
             except Exception as error:
-                print(f"Backup Faield {error}")
-                #preserved for logging sys
-                #message = f"Backup Faield {error}"
-                #fail_message(message)
+                write_log("ERROR", f"Backup Faield {error}")
             self.tasks = []
             self.next_Id = 1
         
         except FileNotFoundError as error:
-            print(f"Data Loading Faield {error}")
-            # preserved for logging sys
-            #message = f"Backup Faield {error}"
-            #fail_message(message)
+            write_log("ERROR", f"Data Loading Faield {error}")
             self._create_empty_file()
             self.task = []
             self.next_Id = 1

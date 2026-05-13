@@ -74,7 +74,11 @@ def main():
 
     while True:
         print(UI_divider("Notification"))
-        notifications = check_reminders(manager.tasks)
+        
+        get_task = manager.get_task()
+        all_task = get_task["data"] 
+        
+        notifications = check_reminders(all_task)
         for notification in notifications:
             print(notification)
         
