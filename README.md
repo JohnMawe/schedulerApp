@@ -48,7 +48,7 @@ The project focuses on:
 Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:JohnMawe/schedulerApp.git
 cd schedulerApp
 ```
 
