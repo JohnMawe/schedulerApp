@@ -88,7 +88,7 @@ python main.py
 
 
 # Core Backend Concepts Practiced
-This projecg intentionally focused on backend engineering concepts.
+This project intentionally focused on backend engineering concepts.
 
 ## Encapsulation
 - Internal state protection
@@ -106,7 +106,7 @@ Data is first written to a temporary file before replacing the original.
 This prevents:
 
 - partial writes
-- file corruption diring crashes
+- file corruption during crashes
 
 ## Recovery System
 If corrupt JSON is detected:
@@ -114,7 +114,7 @@ If corrupt JSON is detected:
 1. backup is created
 2. recovery logged
 3. clean file recreated
-4. application re.ains usable
+4. application remains usable
 
 ## Immutable Thinking
 The project explores:
@@ -130,7 +130,7 @@ Tests focus on:
 - integrity rules
 - predictable system behavior
 
-UI printing is intentionally separatef from logic testing.
+UI printing is intentionally separated from logic testing.
 
 
 # Technologies Used
