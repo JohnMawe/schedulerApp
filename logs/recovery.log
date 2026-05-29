@@ -1,0 +1,40 @@
+1779832537 | ERROR | Start time must be before End time
+1779832539 | ERROR | Start time must be before End time
+1779832544 | ERROR | Start time must be before End time
+1779832547 | ERROR | Start time must be before End time
+1779832548 | ERROR | Start time must be before End time
+1779832549 | ERROR | Start time must be before End time
+1779832559 | ERROR | Start time must be before End time
+1779832560 | ERROR | Start time must be before End time
+1779832603 | ERROR | Start time must be before End time
+1779832667 | ERROR | Start time must be before End time
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpmwan2nwi/tasks.json'
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpdeyj82zn/tasks.json'
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmphk1p7wb4/tasks.json'
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpu90p1u8x/tasks.json'
+1780064729 | ERROR | Start time must be before End time
+1780064729 | ERROR | Reminder must be >= 0 minutes
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpg650dpna/tasks.json'
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpiwwj4qzq/tasks.json'
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpflr1rhir/tasks.json'
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmp7esyi8o1/tasks.json'
+1780064729 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpln188u5h/tasks.json'
+1780064729 | INFO | Data corruption detected
+ Error: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
+1780064729 | INFO | Backup created for tasks.json
+1780064729 | INFO | Empty task file recreated
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpo48xahij/tasks.json'
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpgkxnvkmp/tasks.json'
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmp_jqbgux5/tasks.json'
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpfw8is9t1/tasks.json'
+1780064740 | ERROR | Start time must be before End time
+1780064740 | ERROR | Reminder must be >= 0 minutes
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpp771zkll/tasks.json'
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmp5p0xdbvt/tasks.json'
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmp3i3nzed9/tasks.json'
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpepm4x2yv/tasks.json'
+1780064740 | ERROR | Data Loading Faield [Errno 2] No such file or directory: '/data/data/com.termux/files/usr/tmp/tmpsn4f1uuw/tasks.json'
+1780064740 | INFO | Data corruption detected
+ Error: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
+1780064740 | INFO | Backup created for tasks.json
+1780064740 | INFO | Empty task file recreated

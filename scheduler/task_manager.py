@@ -46,17 +46,33 @@ class TaskManager:
         if task_Id:
             for task in self.tasks:
                 if task.Id == task_Id:
-                    data = task
+                    data = {
+                        "id": task.Id,
+                        "title": task.title,
+                        "start_time": task.start_time,
+                        "end_time": task.end_time,
+                        "note": task.note
+                    }
+                    CLI_data = task
                     message = f"Got task: {task.Id}"
-                    return success_message(message, data)
+                    return success_message(message, data, CLI_data)
                     
             message = f"Task with ID: {task_Id} dose not exist"
             return fail_message(message)
             
         else:
-            data = self.tasks.copy()
+            tasks = self.tasks.copy()
+            data = [{
+                        "id": task.Id,
+                        "title": task.title,
+                        "start_time": task.start_time,
+                        "end_time": task.end_time,
+                        "note": task.note
+                    }
+                    for task in tasks]
+            CLI_data = [task for task in tasks]
             message = "Got all Tasks"
-            return success_message(message, data)
+            return success_message(message, data, CLI_data)
             
    
     def update_task(self, task_Id, new_title=None, new_start_time=None, new_end_time=None, new_note=None, current_time=None):

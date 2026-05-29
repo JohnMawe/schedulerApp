@@ -93,11 +93,11 @@ def main():
     while True:
         print(UI_divider("Notification"))
         
-        get_task = manager.get_task()
-        all_task = get_task["data"] 
+        all_task = manager.tasks
         
         print("0. Check Notification\n")
-        notifications = check_reminders(all_task)
+        reminder = check_reminders(all_task)
+        notifications = reminder["data"]
         for notification in notifications:
             print(notification)
         
@@ -163,7 +163,7 @@ def main():
                         task_id = get_id()
                         get_task = manager.get_task(task_id)
                         if get_task["success"]:
-                            print(f"{get_task['message']}\n{get_task['data']}")
+                            print(f"{get_task['message']}\n{get_task['CLI_data']}")
                         else:
                             print(get_task["message"])
             
@@ -172,7 +172,7 @@ def main():
                     
                 elif choice == "2":
                     get_task = manager.get_task()
-                    all_task = get_task["data"]
+                    all_task = get_task["CLI_data"]
                     print(UI_divider("All Tasks"))
                     for task in all_task:
                         print(f"\n{task}")

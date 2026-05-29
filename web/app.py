@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from scheduler.task_manager import TaskManager
 from scheduler.task import Task
+from scheduler.reminders import check_reminders
 from utilities.helpers import fail_message
 from utilities.validation import validate_datetime, validate_reminder, validate_id, validate_string
 
 app = Flask(__name__)
+CORS(app, origins=(["http://localhost:3000"]))
 manager = TaskManager()
 
 @app.route("/tasks", methods=["GET"])
@@ -66,9 +69,13 @@ def remove_task(id):
     id = validate_id(id)
     if isinstance(id, str):
         return jsonify(fail_message(id)), 400
-        
+      
     return jsonify(manager.remove_task(id)), 200
+    
+@app.route("/tasks/reminders", methods=["GET"])
+def check_reminder():
+    all_task = manager.tasks
+    return check_reminders(all_task)
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    
+    app.run(port=5100, debug=True)

@@ -1,4 +1,5 @@
 from utilities.time_key import timestamp_to_local, now_timestamp, datetime_to_timestamp, time_delta
+from utilities.helpers import success_message
 
 def check_reminders(tasks, current_time=None):
     if current_time:
@@ -32,5 +33,5 @@ def check_reminders(tasks, current_time=None):
             if not task.notified["completed"]:
                 task_events.append(f"✅ {task.title} has ended")
                 task.notified["completed"] = True
-    return task_events
                 
+    return success_message("All notification", data=task_events)
