@@ -1,21 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scheduler App</title>
 </head>
 <body>
 
-    <h1>Scheduler Running</h1>
-    
+    <div class="task-area">
+        <h>TASKS</h>
+        <div id="taskList">
+            <ui></ui>
+        </div>
+    </div>
+
+    <div class="taskId">
+        <lable for="taskId">Task ID:</lable>
+        <label for="taskId"></label><input type="number" name="taskId" id="taskId" min="0" placeholder="Enter Task ID">
+        <div id="selectedTask"></div>
+    </div>
+
+    <div class="taskForm">
+        <h>ADD/UPDATE TASK</h><br>
+        <form id="taskForm">
+            <lable for="title">Title *:</lable><br>
+            <label for="taskTitle"></label><input type="text" name="title" id="taskTitle" placeholder="Enter Task Title" required="required"><br>
+            <lable for="description">Description:</lable><br>
+            <label for="taskNote"></label><input type="text" name="description" id="taskNote" placeholder="Enter Task Description"><br>
+            <lable for="startDate">Begins at *:</lable><br>
+            <label for="taskStart"></label><input type="datetime-local" name="startDate" id="taskStart" required="required"><br>
+            <lable for="endDate">Due Date *:</lable><br>
+            <label for="taskEnd"></label><input type="datetime-local" name="endDate" id="taskEnd" required="required"><br>
+            <lable for="reminder">Remind before:</lable><br>
+            <label for="taskReminder"></label><input type="number" name="reminder" id="taskReminder" value="15" min="1" placeholder="Enter Reminder Reminder"><br>
+            <button type="submit" name="actionType" value="save">Save Task</button>
+            <button type="submit" name="actionType" value="update" formnovalidate>Update Task</button>
+        </form>
+    </div>
+
+    <div class="notification">
+        <h>Notification</h>
+        <div id="notification"></div>
+    </div>
+
     <button onclick="getTasks()">Get Tasks</button>
-    <button onclick="getTask(1)">Get Task by id</button>
-    <button onclick="addTask()">Add Task</button>
-    <button onclick="updateTask(3)">Update Task</button>
-    <button onclick="deleteTask(4)">Delete Task</button>
+    <button onclick="getTaskId()">Get Task by id</button>
+    <button onclick="updateTask()">Update Task</button>
+    <button onclick="deleteTask()">Delete Task</button>
     <button onclick="checkReminders()">Reminder</button>
     
     <script src="js/app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-    <script>eruda.init();</script>
+<!--    <script>eruda.init();</script>-->
 </body>
 </html>

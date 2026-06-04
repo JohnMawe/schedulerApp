@@ -1,4 +1,7 @@
-venv\
+.venv\
 data\tasks.json
 scheduler\__pycache__
 __pychache__
+venv\
+.idea\
+*.pyc

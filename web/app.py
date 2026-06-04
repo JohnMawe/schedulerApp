@@ -7,7 +7,7 @@ from utilities.helpers import fail_message
 from utilities.validation import validate_datetime, validate_reminder, validate_id, validate_string
 
 app = Flask(__name__)
-CORS(app, origins=(["http://localhost:3000"]))
+CORS(app, origins=(["http://localhost:63342"]))
 manager = TaskManager()
 
 @app.route("/tasks", methods=["GET"])
@@ -61,7 +61,10 @@ def update_task(id):
         return jsonify(fail_message(new_end)), 400
         
     new_note = validate_string(data.get("note"))
-        
+
+    if not new_title and not new_start and not new_end and not new_note:
+        return jsonify(fail_message("Values for update are not available")), 400
+
     return jsonify(manager.update_task(id, new_title, new_start, new_end, new_note)), 200
  
 @app.route("/tasks/<id>", methods=["DELETE"])   
@@ -75,7 +78,7 @@ def remove_task(id):
 @app.route("/tasks/reminders", methods=["GET"])
 def check_reminder():
     all_task = manager.tasks
-    return check_reminders(all_task)
+    return jsonify(check_reminders(all_task))
 
 if __name__ == "__main__":
     app.run(port=5100, debug=True)

@@ -53,7 +53,7 @@ class TaskManager:
                         "end_time": task.end_time,
                         "note": task.note
                     }
-                    CLI_data = task
+                    CLI_data = str(task)
                     message = f"Got task: {task.Id}"
                     return success_message(message, data, CLI_data)
                     
@@ -70,7 +70,8 @@ class TaskManager:
                         "note": task.note
                     }
                     for task in tasks]
-            CLI_data = [task for task in tasks]
+
+            CLI_data = [str(task) for task in tasks]
             message = "Got all Tasks"
             return success_message(message, data, CLI_data)
             
