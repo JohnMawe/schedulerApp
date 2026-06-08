@@ -1,5 +1,4 @@
 from utilities.time_key import str_to_timestamp, now_timestamp
-from utilities.recovery_logger import write_log
 
 def validate_datetime(dateTime):
     if dateTime:

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduler App</title>
+</head>
+<body>
+
+    <div class="task-area">
+        <h1>TASKS</h1>
+        <div id="taskList"></div>
+    </div>
+
+    <div class="taskId">
+        <label for="taskId">Task ID:</label>
+        <input type="number" name="taskId" id="taskId" min="0" placeholder="Enter Task ID">
+        <div id="selectedTask"></div>
+    </div>
+
+    <div class="taskForm">
+        <h2>ADD/UPDATE TASK</h2><br>
+        <form id="taskForm">
+            <label for="taskTitle">Title *:</label><br>
+            <input type="text" name="title" id="taskTitle" placeholder="Enter Task Title" required="required"><br>
+            <label for="taskNote">Description:</label><br>
+            <input type="text" name="description" id="taskNote" placeholder="Enter Task Description"><br>
+            <label for="taskStart">Begins at *:</label><br>
+            <input type="datetime-local" name="startDate" id="taskStart" required="required"><br>
+            <label for="taskEnd">Due Date *:</label><br>
+            <input type="datetime-local" name="endDate" id="taskEnd" required="required"><br>
+            <label for="taskReminder">Remind before:</label><br>
+            <input type="number" name="reminder" id="taskReminder" value="15" min="1" placeholder="Enter Reminder Reminder"><br>
+            <button type="submit" name="actionType" value="save">Save Task</button>
+            <button type="submit" name="actionType" value="update" formnovalidate>Update Task</button>
+        </form>
+    </div>
+
+    <div class="notification">
+        <h2>Notification</h2>
+        <div id="notification"></div>
+    </div>
+
+    <button id="getTasksBtn">Get Tasks</button>
+    <button id="getTaskIdBtn">Get Task by id</button>
+    <button id="deleteTaskBtn">Delete Task</button>
+    <button id="checkRemindersBtn">Reminder</button>
+    
+    <script type="module" src="js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<!--    <script>eruda.init();</script>-->
+</body>
+</html>

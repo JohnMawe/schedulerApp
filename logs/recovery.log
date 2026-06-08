@@ -143,3 +143,33 @@
  Error: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
 1780611494 | INFO | Backup created for tasks.json
 1780611494 | INFO | Empty task file recreated
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmp0rizbp1d\\tasks.json'
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmps0pnlya9\\tasks.json'
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmp4411fdeh\\tasks.json'
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpv3u369a5\\tasks.json'
+1780841671 | ERROR | Start time must be before End time
+1780841671 | ERROR | Reminder must be >= 0 minutes
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpamuwrath\\tasks.json'
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpliiksi0y\\tasks.json'
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmp704utxre\\tasks.json'
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpw7d0q9up\\tasks.json'
+1780841671 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmp4wtrgurk\\tasks.json'
+1780841671 | INFO | Data corruption detected
+ Error: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
+1780841671 | INFO | Backup created for tasks.json
+1780841671 | INFO | Empty task file recreated
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmps9ddu9b2\\tasks.json'
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpqxpqi5e9\\tasks.json'
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpassje0eg\\tasks.json'
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpfdsj7ew3\\tasks.json'
+1780854943 | ERROR | Start time must be before End time
+1780854943 | ERROR | Reminder must be >= 0 minutes
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpu58911w_\\tasks.json'
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpqmpw2b6k\\tasks.json'
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpcmpywh_x\\tasks.json'
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmp9aguqnzi\\tasks.json'
+1780854943 | ERROR | Data Loading Faield [Errno 2] No such file or directory: 'C:\\Users\\USER\\AppData\\Local\\Temp\\tmpx25zz8ib\\tasks.json'
+1780854943 | INFO | Data corruption detected
+ Error: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
+1780854943 | INFO | Backup created for tasks.json
+1780854943 | INFO | Empty task file recreated

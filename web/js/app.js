@@ -1,97 +1,73 @@
-const route = "http://127.0.0.1:5100/tasks";
+import {addTask, getTasks, updateTask, deleteTask, checkReminders, getTask} from "./services/tasksAPI.js";
+
+import {formatDateTime} from "./utilities/dateFomatter.js";
+
 const taskList = document.querySelector("#taskList");
 const selectedTaskArea = document.querySelector("#selectedTask");
 const  taskForm = document.querySelector("#taskForm");
 const notification = document.querySelector("#notification");
 
 // Format Date and Time to "YYYY-MM-DD HH:MM"
-function formatDate(rawDate) {
-    const date = new Date(rawDate);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-11
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return  `${year}-${month}-${day} ${hours}:${minutes}`;
-}
 
 window.addEventListener("load", async () => {
-    await getTasks();
+   await renderTasks();
 });
 
 // Get all tasks from backend and display them in the task list.
-async function getTasks() {
-    const response = await fetch(route);
-    const data = await response.json();
-    console.log(data);
-
-    if (data.length === 0) {
-        alert("There is no tasks");
+async function renderTasks() {
+    const response = await getTasks();
+    if (!response.success) {
+        alert(response.message);
+        return;
     }
+    const data = response.data;
+    console.log(data);
+    if (data.data.length === 0) {
+        taskList.innerHTML = "";
+        const taskElement = document.createElement("p");
+        taskElement.innerText = "+ADD TASK";
+        taskList.append(taskElement);
+        return;
+        }
 
     if (!data.success) {
         console.log(data.message);
         alert(data.message);
+        return;
     }
 
     taskList.innerHTML = "";
-    const tasks = data.CLI_data
+    const tasks = data["CLI_data"];
     for (const task of tasks) {
-        const taskElement = document.createElement("li");
+        const taskElement = document.createElement("p");
         taskElement.innerHTML = task
         taskList.append(taskElement);
     }
 }
 
-//  Add new task to backend, then update task list. newTask is an object with the new task info.
-async function addTask(newTask) {
-    const response = await fetch(route, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(newTask)
-    });
-
-    const data = await response.json();
-    console.log(data);
-    await getTasks()
-    return data
-}
-
-// Update task with id, then update task list. newTask is an object with the new task info. If a field is null, it will keep the old value.
-async function updateTask(id, newTask) {
-    const response = await fetch(`http://127.0.0.1:5100/tasks/${id}`,{
-        method: "PATCH",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(newTask)
-    });
-
-    const data = await response.json();
-    console.log(data);
-    await getTasks()
-    return data
-}
-
 // Get task info from backend and display it. Task ID is taken from form input.
 async function getTaskId() {
-    const id = document.getElementById("taskId").value;
 
+    const id = document.getElementById("taskId").value;
     if (!id) {
         console.error("Please enter a task ID");
         alert("Please enter a task ID");
         return;
     }
-    const response = await fetch(`http://127.0.0.1:5100/tasks/${id}`);
 
-    const data = await response.json();
-    console.log(data);
+    const response = await getTask(id);
+    if (!response.success) {
+        alert(response.message);
+        return;
+    }
+    const data = response.data;
     if (!data.success){
         alert(data.message);
+        return;
     }
-
     const taskElement = document.createElement("p");
     selectedTaskArea.innerHTML = "";
-    taskElement.innerText = data.CLI_data;
+    taskElement.innerText = data["CLI_data"];
     selectedTaskArea.append(taskElement);
 }
 
@@ -114,14 +90,21 @@ taskForm.addEventListener("submit", async (event) => {
 
         const newTask = {
             title: title,
-            start: formatDate(rawStart),
-            end: formatDate(rawEnd),
+            start: formatDateTime(rawStart),
+            end: formatDateTime(rawEnd),
             note: note,
             reminder: reminder
         };
-        const addResponse = await addTask(newTask);
+        const response = await addTask(newTask);
+        if (!response.success) {
+            alert(response.message);
+            return;
+        }
+
+        const addResponse = response.data;
         if (addResponse.success) {
             alert(addResponse.message);
+            await renderTasks()
         } else {
             alert(addResponse.message);
         }
@@ -131,8 +114,8 @@ taskForm.addEventListener("submit", async (event) => {
 
         // Clean data form - if the user leaves a field empty, it will be sent as null to the backend, which will keep the old value.
         let taskTitle = (!title) ? null : title;
-        let startTime = (!rawStart) ? null : formatDate(rawStart);
-        let endTime = (!rawEnd) ? null : formatDate(rawEnd);
+        let startTime = (!rawStart) ? null : formatDateTime(rawStart);
+        let endTime = (!rawEnd) ? null : formatDateTime(rawEnd);
         let taskNote = (!note) ? null : note;
         console.log(taskTitle, startTime, endTime, taskNote);
 
@@ -149,43 +132,55 @@ taskForm.addEventListener("submit", async (event) => {
                 alert("Please enter a task ID");
                 return;
             }
-        const updateResponse = await updateTask(id, newTask);
 
+        const response = await updateTask(id, newTask);
+        if (!response.success) {
+            alert(response.message);
+            return;
+        }
+
+        const updateResponse = response.data;
         if (!updateResponse.success) {
             alert(updateResponse.message);
+            await renderTasks()
         } else {
             alert(updateResponse.message);
         }
-
     }});
 
 
-async function deleteTask(){
+async function deleteRender(){
     const id = document.getElementById("taskId").value;
 
     if (!id) {
         console.error("Please enter a task ID");
         alert("Please enter a task ID");
+        return;
     }
-    const response = await fetch(`http://127.0.0.1:5100/tasks/${id}`, {
-        method: "DELETE"
-    });
-    
-    const data = await response.json();
-    console.log(data);
+
+    const response = await deleteTask(id);
+    if (!response.success) {
+        alert(response.message);
+        return;
+    }
+
+    const data = response.data;
+
     if (data.success) {
         alert(data.message);
-        await getTasks()
+        await renderTasks()
     } else {
         alert(data.message);
     }
 }
 
-async function checkReminders() {
-    const response = await fetch(route + "/reminders");
-    
-    const data = await response.json();
-    console.log(data);
+async function renderReminders() {
+    const response = await checkReminders();
+    if (!response.success) {
+        alert(response.message);
+        return;
+    }
+    const data = response.data;
 
     if (data.success) {
         if (data.data.length > 0) {
@@ -195,9 +190,21 @@ async function checkReminders() {
                 reminderElement.innerText = reminder;
                 notification.append(reminderElement);
             }
-    } else {
-        alert("Notification unavailable");}
+        } else {
+            alert("Notification unavailable");
+        }
     } else {
         alert(data.message);
     }
 }
+
+document.querySelector("#getTasksBtn").addEventListener("click", renderTasks);
+
+document.querySelector("#getTaskIdBtn").addEventListener("click", getTaskId);
+
+document.querySelector("#deleteTaskBtn").addEventListener("click", deleteRender);
+
+document.querySelector("#checkRemindersBtn").addEventListener("click", renderReminders);
+
+
+

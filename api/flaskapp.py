@@ -62,7 +62,7 @@ def update_task(id):
         
     new_note = validate_string(data.get("note"))
 
-    if not new_title and not new_start and not new_end and not new_note:
+    if  new_title is None and new_start is None and new_end is None and new_note is None:
         return jsonify(fail_message("Values for update are not available")), 400
 
     return jsonify(manager.update_task(id, new_title, new_start, new_end, new_note)), 200
