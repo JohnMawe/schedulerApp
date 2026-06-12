@@ -17,7 +17,7 @@ export async function addTask(newTask) {
 
     } catch (error) {
         console.error("Failed to add task:", error);
-        return failResponse("Failed to add task");
+        return failResponse("ERROR: Failed to add task. Please check your Network and try again");
     }
 }
 
@@ -31,7 +31,7 @@ export async function deleteTask(id) {
         return successResponse("Task deleted successfully", data);
     } catch (error) {
         console.error("Failed to delete task:", error);
-        return failResponse("Failed to delete task");
+        return failResponse("ERROR: Failed to delete task. Please check your Network and try again");
     }
 }
 
@@ -47,7 +47,7 @@ export async function updateTask(id, newTask) {
         return successResponse("Task updated successfully", data);
     } catch (error) {
         console.error("Failed to update task:", error);
-        return failResponse("Failed to update task");
+        return failResponse("ERROR: Failed to update task. Please check your Network and try again");
 
     }
 }
@@ -60,7 +60,7 @@ export async function getTasks() {
         return successResponse("Tasks fetched successfully", data);
     } catch (error) {
         console.error("Failed to fetch tasks:", error);
-        return failResponse("Failed to fetch tasks");
+        return failResponse("ERROR: Failed to fetch tasks. Please check your Network and try again");
     }
 }
 
@@ -72,7 +72,7 @@ export async function getTask(id) {
         return successResponse("Task fetched successfully", data);
     } catch (error) {
         console.error("Failed to fetch task:", error);
-        return failResponse("Failed to fetch task");
+        return failResponse("ERROR: Failed to fetch task. Please check your Network and try again");
     }
 }
 
@@ -84,6 +84,6 @@ export async function checkReminders(){
         return successResponse("Reminders fetched successfully", data);
     }catch(error){
         console.error("Failed to fetch reminders:", error);
-        return failResponse("Failed to fetch reminders");
+        return failResponse("ERROR: Failed to fetch reminders. Please check your Network and try again");
     }
 }

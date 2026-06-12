@@ -1,74 +1,74 @@
-import {addTask, getTasks, updateTask, deleteTask, checkReminders, getTask} from "./services/tasksAPI.js";
+import {getTasks, deleteTask, checkReminders, getTask} from "./services/tasksAPI.js";
 
-import {formatDateTime} from "./utilities/dateFomatter.js";
+import {
+    renderTasks,
+    rendersSelectedTask,
+    renderReminders,
+    renderError,
+    renderWarning,
+    renderSuccess
+} from "./UI/renderer.js";
 
-const taskList = document.querySelector("#taskList");
+import {handleSaveAction, handleUpdateAction} from "./handlers/btnClickHandler.js";
+
+
+const tasksArea = document.querySelector("#tasksArea");
 const selectedTaskArea = document.querySelector("#selectedTask");
 const  taskForm = document.querySelector("#taskForm");
-const notification = document.querySelector("#notification");
+const notificationArea = document.querySelector("#notificationArea");
+const messageArea = document.querySelector("#messageArea");
+
+// Do NOT read the task ID once at module load time. The input may be empty then
+// or may change later. Use a getter so we always read the current value and
+// avoid a null-element "enter id" error when the element isn't present yet.
+function getTaskId() {
+    const el = document.getElementById("taskId");
+    return el ? el.value : "";
+}
 
 // Format Date and Time to "YYYY-MM-DD HH:MM"
 
 window.addEventListener("load", async () => {
-   await renderTasks();
+   await showTasks();
 });
 
+
 // Get all tasks from backend and display them in the task list.
-async function renderTasks() {
+async function showTasks() {
     const response = await getTasks();
     if (!response.success) {
-        alert(response.message);
+        renderError(response.message, messageArea);
         return;
     }
-    const data = response.data;
-    console.log(data);
-    if (data.data.length === 0) {
-        taskList.innerHTML = "";
-        const taskElement = document.createElement("p");
-        taskElement.innerText = "+ADD TASK";
-        taskList.append(taskElement);
-        return;
-        }
+    const data = response.data
 
-    if (!data.success) {
-        console.log(data.message);
-        alert(data.message);
-        return;
-    }
-
-    taskList.innerHTML = "";
-    const tasks = data["CLI_data"];
-    for (const task of tasks) {
-        const taskElement = document.createElement("p");
-        taskElement.innerHTML = task
-        taskList.append(taskElement);
+    if (data.success) {
+        renderTasks(data["CLI_data"], tasksArea);
+    }else{
+        renderError(data.message, messageArea);
     }
 }
 
 // Get task info from backend and display it. Task ID is taken from form input.
-async function getTaskId() {
-
-    const id = document.getElementById("taskId").value;
+async function showTask() {
+    const id = getTaskId();
     if (!id) {
-        console.error("Please enter a task ID");
-        alert("Please enter a task ID");
+        renderWarning("Please enter a task ID");
         return;
     }
 
     const response = await getTask(id);
     if (!response.success) {
         alert(response.message);
+        renderError(response.message, messageArea);
         return;
     }
     const data = response.data;
-    if (!data.success){
-        alert(data.message);
-        return;
+    if (data.success) {
+        rendersSelectedTask(data["CLI_data"], selectedTaskArea);
+    } else {
+        renderError(data.message, messageArea);
     }
-    const taskElement = document.createElement("p");
-    selectedTaskArea.innerHTML = "";
-    taskElement.innerText = data["CLI_data"];
-    selectedTaskArea.append(taskElement);
 }
 
 // Get task info from form, saves or updates, and update task list
@@ -87,124 +87,87 @@ taskForm.addEventListener("submit", async (event) => {
 
         // Save task
         if (clickedButton === "save") {
+            const response = await handleSaveAction(title, rawStart, rawEnd, note, reminder);
 
-        const newTask = {
-            title: title,
-            start: formatDateTime(rawStart),
-            end: formatDateTime(rawEnd),
-            note: note,
-            reminder: reminder
-        };
-        const response = await addTask(newTask);
-        if (!response.success) {
-            alert(response.message);
-            return;
-        }
-
-        const addResponse = response.data;
-        if (addResponse.success) {
-            alert(addResponse.message);
-            await renderTasks()
-        } else {
-            alert(addResponse.message);
-        }
+            if(!response.success) {
+                renderError(response.message, messageArea);
+                return;
+            }
+            const addNewTask = response.data
+            if(addNewTask.success) {
+                renderSuccess(addNewTask.message, messageArea);
+                await showTasks();
+            }
 
 //Updates task
     } else if (clickedButton === "update") {
-
-        // Clean data form - if the user leaves a field empty, it will be sent as null to the backend, which will keep the old value.
-        let taskTitle = (!title) ? null : title;
-        let startTime = (!rawStart) ? null : formatDateTime(rawStart);
-        let endTime = (!rawEnd) ? null : formatDateTime(rawEnd);
-        let taskNote = (!note) ? null : note;
-        console.log(taskTitle, startTime, endTime, taskNote);
-
-        const newTask = {
-            title: taskTitle,
-            start: startTime,
-            end: endTime,
-            note: taskNote
-        };
-
-        const id = document.getElementById("taskId").value;
-            if (!id) {
-                console.error("Please enter a task ID");
-                alert("Please enter a task ID");
-                return;
-            }
-
-        const response = await updateTask(id, newTask);
-        if (!response.success) {
-            alert(response.message);
+        const id = getTaskId();
+        if (!id) {
+            renderWarning("Please enter a task ID");
             return;
         }
 
-        const updateResponse = response.data;
-        if (!updateResponse.success) {
-            alert(updateResponse.message);
-            await renderTasks()
-        } else {
-            alert(updateResponse.message);
+        const response = await handleUpdateAction(id, title, rawStart, rawEnd, note);
+
+        if(!response.success) {
+            renderError(response.message, messageArea);
+            return;
         }
+        const updateNewTask = response.data
+            if(updateNewTask.success) {
+                renderSuccess(updateNewTask.message, messageArea);
+                await showTasks();
+            }else {
+                renderError(updateNewTask.message, messageArea);
+            }
     }});
 
 
 async function deleteRender(){
-    const id = document.getElementById("taskId").value;
-
+    const id = getTaskId();
     if (!id) {
-        console.error("Please enter a task ID");
-        alert("Please enter a task ID");
+        renderWarning("Please enter a task ID");
         return;
     }
 
     const response = await deleteTask(id);
     if (!response.success) {
-        alert(response.message);
+        renderError(response.message, messageArea);
         return;
     }
 
     const data = response.data;
 
     if (data.success) {
-        alert(data.message);
-        await renderTasks()
+        renderSuccess(data.message, messageArea);
+        await showTasks()
     } else {
-        alert(data.message);
+        renderError(data.message, messageArea);
     }
 }
 
-async function renderReminders() {
+async function notification() {
     const response = await checkReminders();
     if (!response.success) {
-        alert(response.message);
+        renderError(response.message, messageArea);
         return;
     }
     const data = response.data;
 
     if (data.success) {
-        if (data.data.length > 0) {
-            notification.innerHTML = "";
-            for (const reminder of data.data) {
-                const reminderElement = document.createElement("p");
-                reminderElement.innerText = reminder;
-                notification.append(reminderElement);
-            }
-        } else {
-            alert("Notification unavailable");
-        }
+        renderReminders(data.data, notificationArea);
     } else {
-        alert(data.message);
+        renderError(data.message, messageArea);
     }
 }
 
-document.querySelector("#getTasksBtn").addEventListener("click", renderTasks);
+document.querySelector("#getTasksBtn").addEventListener("click", showTasks);
 
-document.querySelector("#getTaskIdBtn").addEventListener("click", getTaskId);
+document.querySelector("#getTaskIdBtn").addEventListener("click", showTask);
 
 document.querySelector("#deleteTaskBtn").addEventListener("click", deleteRender);
 
-document.querySelector("#checkRemindersBtn").addEventListener("click", renderReminders);
+document.querySelector("#checkRemindersBtn").addEventListener("click", notification);
 
 
 

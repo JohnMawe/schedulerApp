@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scheduler App</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <div class="task-area">
+    <div class="tasksContainer">
         <h1>TASKS</h1>
-        <div id="taskList"></div>
+        <div id="tasksArea"></div>
+    </div>
+
+    <div class="seletedContainer">
+        <h2>SELECTED TASKS</h2>
+        <div id="selectedTasks"></div>
     </div>
 
     <div class="taskId">
         <label for="taskId">Task ID:</label>
         <input type="number" name="taskId" id="taskId" min="0" placeholder="Enter Task ID">
-        <div id="selectedTask"></div>
     </div>
 
     <div class="taskForm">
@@ -36,9 +41,14 @@
         </form>
     </div>
 
-    <div class="notification">
-        <h2>Notification</h2>
-        <div id="notification"></div>
+    <div class="notificationContainer">
+        <h2>NOTIFICATION</h2>
+        <div id="notificationArea"></div>
+    </div>
+
+    <div class="messageContainer">
+        <h2>MESSAGE</h2>
+        <div id="messageArea"></div>
     </div>
 
     <button id="getTasksBtn">Get Tasks</button>
