@@ -12,24 +12,27 @@ import {
 import {handleSaveAction, handleUpdateAction} from "./handlers/btnClickHandler.js";
 
 
+const selectedRenderArea = document.querySelector(".selectedContainer");
+const tasksContainer = document.querySelector(".tasksContainer");
 const tasksArea = document.querySelector("#tasksArea");
-const selectedTaskArea = document.querySelector("#selectedTask");
+const selectedTaskArea = document.querySelector("#selectedTasks");
 const  taskForm = document.querySelector("#taskForm");
+const taskFormClass = document.querySelector(".taskForm");
 const notificationArea = document.querySelector("#notificationArea");
 const messageArea = document.querySelector("#messageArea");
 
-// Do NOT read the task ID once at module load time. The input may be empty then
-// or may change later. Use a getter so we always read the current value and
-// avoid a null-element "enter id" error when the element isn't present yet.
-function getTaskId() {
-    const el = document.getElementById("taskId");
-    return el ? el.value : "";
+let getTaskId = null
+function handleGetTaskID(taskId) {
+    console.log("SelectedID: " + taskId);
+    if (taskId !==undefined && taskId !== " " && taskId !== null) {
+        getTaskId = taskId;
+    }
 }
 
 // Format Date and Time to "YYYY-MM-DD HH:MM"
-
 window.addEventListener("load", async () => {
    await showTasks();
+   await notification();
 });
 
 
@@ -43,15 +46,19 @@ async function showTasks() {
     const data = response.data
 
     if (data.success) {
-        renderTasks(data["CLI_data"], tasksArea);
+        renderTasks(data.data, tasksArea, showTask, handleGetTaskID);
+        document.querySelector("#addTaskBTN").addEventListener("click",  () => {
+            taskFormClass.classList.toggle("activate");
+        });
+
     }else{
         renderError(data.message, messageArea);
     }
 }
 
 // Get task info from backend and display it. Task ID is taken from form input.
-async function showTask() {
-    const id = getTaskId();
+async function showTask(id) {
+    console.log(id);
     if (!id) {
         renderWarning("Please enter a task ID");
         return;
@@ -65,7 +72,7 @@ async function showTask() {
     }
     const data = response.data;
     if (data.success) {
-        rendersSelectedTask(data["CLI_data"], selectedTaskArea);
+        rendersSelectedTask(data.data, selectedTaskArea);
     } else {
         renderError(data.message, messageArea);
     }
@@ -124,7 +131,7 @@ taskForm.addEventListener("submit", async (event) => {
 
 
 async function deleteRender(){
-    const id = getTaskId();
+    const id = getTaskId;
     if (!id) {
         renderWarning("Please enter a task ID");
         return;
@@ -140,7 +147,12 @@ async function deleteRender(){
 
     if (data.success) {
         renderSuccess(data.message, messageArea);
+        // Refresh task to show new update
         await showTasks()
+        // Clear Details dashboard
+        selectedRenderArea.classList.remove("activate");
+        // Activate home dashboard
+        tasksContainer.classList.remove("deactivate");
     } else {
         renderError(data.message, messageArea);
     }
@@ -161,13 +173,8 @@ async function notification() {
     }
 }
 
-document.querySelector("#getTasksBtn").addEventListener("click", showTasks);
-
-document.querySelector("#getTaskIdBtn").addEventListener("click", showTask);
-
-document.querySelector("#deleteTaskBtn").addEventListener("click", deleteRender);
+document.querySelector("#deleteTaskBTN").addEventListener("click", deleteRender);
 
 document.querySelector("#checkRemindersBtn").addEventListener("click", notification);
 
-
-
+document.querySelector("#backBTN").addEventListener("click",  () => {selectedRenderArea.classList.remove("activate"); tasksContainer.classList.remove("deactivate"); });

@@ -1,22 +1,35 @@
-export function renderTasks(tasks, renderArea) {
+const selectedRenderArea = document.querySelector(".selectedContainer");
+const tasksContainer = document.querySelector(".tasksContainer");
+
+
+export function renderTasks(tasks, renderArea, getTaskByID, getID) {
     renderArea.innerHTML = "";
-    if (tasks.length === 0) {
-        const paragraphElement = document.createElement("p");
-        paragraphElement.innerText = "+ADD TASK";
-        renderArea.append(paragraphElement);
-        return;
-    }
+    const buttonElement = document.createElement("button");
+    buttonElement.innerText = "+ADD TASK";
+    buttonElement.id = "addTaskBTN";
+    buttonElement.className = "addTaskBTN";
+    renderArea.append(buttonElement);
+
     for (const task of tasks) {
-        const paragraphElement = document.createElement("p");
-        paragraphElement.innerText = task;
-        renderArea.append(paragraphElement);
+        const divElement = document.createElement("div");
+        divElement.innerText = task.title;
+        divElement.addEventListener("click", () => {
+            getTaskByID(task.id);
+            getID(task.id);
+            selectedRenderArea.classList.add("activate");
+            tasksContainer.classList.add("deactivate");
+        })
+        renderArea.append(divElement);
     }
 }
 
 export function rendersSelectedTask(task, renderArea) {
     renderArea.innerHTML = "";
     const paragraphElement = document.createElement("p");
-    paragraphElement.innerText = task;
+    const headerElement = document.createElement("h3");
+    headerElement.innerText = task.title;
+    paragraphElement.innerText = task.note;
+    renderArea.append(headerElement);
     renderArea.append(paragraphElement);
 }
 
