@@ -1,3 +1,5 @@
+import {formatTimestamp} from "../utilities/dateFomatter.js";
+
 const selectedRenderArea = document.querySelector(".selectedContainer");
 const tasksContainer = document.querySelector(".tasksContainer");
 
@@ -23,19 +25,30 @@ export function renderTasks(tasks, renderArea, getTaskByID, getID) {
     }
 }
 
-export function rendersSelectedTask(task, renderArea) {
-    renderArea.innerHTML = "";
+export function rendersSelectedTask(task, ...renderArea) {
+    renderArea[0].innerHTML = "";
+    renderArea[1].innerHTML = "";
+    renderArea[2].innerHTML = "";
+    renderArea[3].innerHTML = "";
     const paragraphElement = document.createElement("p");
-    const headerElement = document.createElement("h3");
+    const headerElement = document.createElement("p");
+    const paragraphElement1 = document.createElement("p");
+    const paragraphElement2 = document.createElement("p");
     headerElement.innerText = task.title;
     paragraphElement.innerText = task.note;
-    renderArea.append(headerElement);
-    renderArea.append(paragraphElement);
+    paragraphElement1.innerText = formatTimestamp(task.start_time);
+
+    paragraphElement2.innerText = formatTimestamp(task.end_time);
+    renderArea[0].append(headerElement);
+    renderArea[1].append(paragraphElement);
+    renderArea[2].append(paragraphElement1);
+    renderArea[3].append(paragraphElement2);
+
 }
 
 export function renderReminders(reminders, reminderArea) {
+    reminderArea.innerText = "";
     if (reminders.length > 0) {
-        reminderArea.innerText = "";
         for (const reminder of reminders) {
             const paragraphElement = document.createElement("p");
             paragraphElement.innerText = reminder;

@@ -173,3 +173,6 @@
  Error: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
 1780854943 | INFO | Backup created for tasks.json
 1780854943 | INFO | Empty task file recreated
+1781806230 | ERROR | Start time must be before End time
+1781806233 | ERROR | Start time must be before End time
+1781806234 | ERROR | Start time must be before End time

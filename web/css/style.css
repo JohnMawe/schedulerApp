@@ -10,6 +10,10 @@
     --copyright: #687878;
     --btnsurface: #00A334;
     --btntxt: #B7FDFE;
+    --darkGarnet: #660000;
+    --navyElectronic: #090C9B;
+    --seaGrass: #639A88;
+    --metallicGold: #DEB841;
 
 }
 
@@ -61,11 +65,22 @@ body{
 
 header{
     margin-bottom: 80px;
+    background-color: var(--surface);
 }
 
 nav {
-    display: flex;
     padding: 10px;
+    height: 60px;
+    width: 100vw;
+    top: 0;
+    align-content: center;
+}
+
+nav a {
+    margin-right: 30px;
+    float: right;
+    text-decoration: none;
+    color: var(--background);
 }
 
 main{
@@ -124,7 +139,7 @@ main{
     border: solid 2px var(--surface);
     border-left: none;
     border-right: none;
-    height: 80%;
+    height: 80vh;
     width: 100%;
 }
 
@@ -135,6 +150,47 @@ main{
 .selectedContainer.activate div{
     padding: 10px;
 }
+
+.selectedContainer.activate p{
+    font-size: 25px;
+}
+
+.title {
+    background-color: var(--darkGarnet);
+    color: var(--background);
+    border-radius: 5px;
+    font-size: 17px;
+    letter-spacing: 3px;
+    padding: 5px;
+}
+
+.description {
+    background-color: var(--navyElectronic);
+    color: var(--background);
+    border-radius: 5px;
+    font-size: 17px;
+    letter-spacing: 3px;
+    padding: 5px;
+}
+
+.begins {
+    background-color: var(--seaGrass);
+    color: var(--background);
+    border-radius: 5px;
+    font-size: 17px;
+    letter-spacing: 3px;
+    padding: 5px;
+}
+
+.due {
+    background-color: var(--metallicGold);
+    color: var(--background);
+    border-radius: 5px;
+    font-size: 17px;
+    letter-spacing: 3px;
+    padding: 5px;
+}
+
 
 .detailsButton {
     align-self: flex-end;
@@ -176,6 +232,18 @@ main{
 
 .notificationContainer{
     display: none;
+}
+
+.notificationContainer.activate {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background1);
+    align-items: center;
+    border: solid 2px var(--surface);
+    border-left: none;
+    border-right: none;
+    height: 80vh;
+    width: 100%;
 }
 
 .messageContainer{

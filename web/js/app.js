@@ -13,17 +13,21 @@ import {handleSaveAction, handleUpdateAction} from "./handlers/btnClickHandler.j
 
 
 const selectedRenderArea = document.querySelector(".selectedContainer");
+const selectedArea = document.querySelector("#selectedArea");
 const tasksContainer = document.querySelector(".tasksContainer");
 const tasksArea = document.querySelector("#tasksArea");
-const selectedTaskArea = document.querySelector("#selectedTasks");
+const titleArea = document.querySelector("#titleArea");
+const descriptionArea = document.querySelector("#descriptionArea");
+const beginsArea = document.querySelector("#beginsArea");
+const dueArea = document.querySelector("#dueArea");
 const  taskForm = document.querySelector("#taskForm");
 const taskFormClass = document.querySelector(".taskForm");
 const notificationArea = document.querySelector("#notificationArea");
+const notificationContainer = document.querySelector(".notificationContainer");
 const messageArea = document.querySelector("#messageArea");
 
 let getTaskId = null
 function handleGetTaskID(taskId) {
-    console.log("SelectedID: " + taskId);
     if (taskId !==undefined && taskId !== " " && taskId !== null) {
         getTaskId = taskId;
     }
@@ -32,7 +36,6 @@ function handleGetTaskID(taskId) {
 // Format Date and Time to "YYYY-MM-DD HH:MM"
 window.addEventListener("load", async () => {
    await showTasks();
-   await notification();
 });
 
 
@@ -72,7 +75,7 @@ async function showTask(id) {
     }
     const data = response.data;
     if (data.success) {
-        rendersSelectedTask(data.data, selectedTaskArea);
+        rendersSelectedTask(data.data, titleArea, descriptionArea, beginsArea, dueArea);
     } else {
         renderError(data.message, messageArea);
     }
@@ -102,6 +105,7 @@ taskForm.addEventListener("submit", async (event) => {
             }
             const addNewTask = response.data
             if(addNewTask.success) {
+                taskForm.reset()
                 renderSuccess(addNewTask.message, messageArea);
                 await showTasks();
             }
@@ -122,6 +126,7 @@ taskForm.addEventListener("submit", async (event) => {
         }
         const updateNewTask = response.data
             if(updateNewTask.success) {
+                taskForm.reset()
                 renderSuccess(updateNewTask.message, messageArea);
                 await showTasks();
             }else {
@@ -175,6 +180,13 @@ async function notification() {
 
 document.querySelector("#deleteTaskBTN").addEventListener("click", deleteRender);
 
-document.querySelector("#checkRemindersBtn").addEventListener("click", notification);
+document.querySelector("#notificationLink").addEventListener("click", async () => {
+    selectedRenderArea.classList.remove("activate");
+    tasksContainer.classList.add("deactivate");
+    notificationContainer.classList.add("activate");
+    await notification();
+});
 
 document.querySelector("#backBTN").addEventListener("click",  () => {selectedRenderArea.classList.remove("activate"); tasksContainer.classList.remove("deactivate"); });
+
+document.querySelector("#notifBackBTN").addEventListener("click",  () => {tasksContainer.classList.remove("deactivate"); notificationContainer.classList.remove("activate"); });

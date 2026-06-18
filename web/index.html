@@ -15,7 +15,8 @@
 <body>
     <header>
         <nav>
-            <button id="checkRemindersBtn">Reminder</button>
+<!--            <button id="checkRemindersBtn">Reminder</button>-->
+            <a href="#" id="notificationLink">Notifications</a>
         </nav>
     </header>
     <main>
@@ -58,7 +59,12 @@
 
         <div class="selectedContainer">
             <h1>DETAILS</h1>
-            <div id="selectedTasks"></div>
+            <div id="selectedArea">
+                <div ><span class="title">Title:</span><span id ="titleArea"></span></div>
+                <div ><span class ="description">Description:</span><span id ="descriptionArea"></span></div>
+                <div><span class ="begins">Begins:</span><span id="beginsArea"></span></div>
+                <div><span class ="due">Due:</span><span id="dueArea"></span></div>
+            </div>
             <div class="detailsButton">
                 <button id="deleteTaskBTN">Delete Task</button>
                 <button id="backBTN">Back</button>
@@ -68,6 +74,7 @@
         <div class="notificationContainer">
             <h2>NOTIFICATION</h2>
             <div id="notificationArea"></div>
+            <button id="notifBackBTN">Back</button>
         </div>
 
         <div class="messageContainer">
