@@ -1,8 +1,10 @@
-.venv\
-data\tasks.json
-scheduler\__pycache__
-__pychache__
-venv\
-.idea\
+.venv/
+data/tasks.json
+scheduler/__pycache__
+__pycache__/
+venv/
+.idea/
 *.pyc
-log\
+log/
+*.py[cod]
+scheduler/__pycache__/
