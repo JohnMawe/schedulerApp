@@ -15,7 +15,6 @@
 <body>
     <header>
         <nav>
-<!--            <button id="checkRemindersBtn">Reminder</button>-->
             <a href="#" id="notificationLink">Notifications</a>
         </nav>
     </header>
@@ -24,9 +23,9 @@
             <h1>TO DO</h1>
             <div id="tasksArea"></div>
 
-            <div class="taskForm">
-                <h2>ADD /  UPDATE TASK</h2><br>
-                <form id="taskForm">
+            <div class="addTaskForm">
+                <h2>ADD TASK</h2><br>
+                <form id="addTaskForm">
                     <div class="field">
                         <label for="taskTitle">Title *:</label><br>
                         <input type="text" name="title" id="taskTitle" placeholder="Enter Task Title" required="required"><br>
@@ -49,12 +48,10 @@
                     </div>
                     <div class="formBTN">
                         <button type="submit" name="actionType" value="save">Save Task</button>
-                        <button type="submit" name="actionType" value="update" formnovalidate>Update Task</button>
                     </div>
 
                 </form>
             </div>
-
         </div>
 
         <div class="selectedContainer">
@@ -65,8 +62,41 @@
                 <div><span class ="begins">Begins:</span><span id="beginsArea"></span></div>
                 <div><span class ="due">Due:</span><span id="dueArea"></span></div>
             </div>
+
+            <div class="updateTaskForm">
+                <div class="heading-text">
+                    <h2>UPDATE TASK</h2>
+                    <button id="exitBTN">X</button>
+                </div>
+
+                <form id="updateTaskForm">
+                    <div class="field">
+                        <label for="newTitle">Title :</label><br>
+                        <input type="text" name="title" id="newTitle" placeholder="Enter Task Title"><br>
+                    </div>
+                    <div class="field">
+                        <label for="newNote">Description:</label><br>
+                        <input type="text" name="description" id="newNote" placeholder="Enter Task Description"><br>
+                    </div>
+                    <div class="field">
+                        <label for="newStart">Begins at :</label><br>
+                        <input type="datetime-local" name="startDate" id="newStart"><br>
+                    </div>
+                    <div class="field">
+                        <label for="newEnd">Due Date :</label><br>
+                        <input type="datetime-local" name="endDate" id="newEnd"><br>
+                    </div>
+                    <div class="formBTN">
+                        <button type="submit" >Save Changes</button>
+                    </div>
+
+                </form>
+            </div>
+
+
             <div class="detailsButton">
-                <button id="deleteTaskBTN">Delete Task</button>
+                <button id="updateTaskBTN">Update</button>
+                <button id="deleteTaskBTN">Delete</button>
                 <button id="backBTN">Back</button>
             </div>
         </div>
@@ -77,9 +107,14 @@
             <button id="notifBackBTN">Back</button>
         </div>
 
-        <div class="messageContainer">
-            <h2>MESSAGE</h2>
-            <div id="messageArea"></div>
+        <div class="infoContainer">
+            <div class="messageContainer">
+                <h2>MESSAGE</h2>
+                <div id="messageArea"></div>
+                <div>
+                    <button id="confirmBTN">OK</button>
+                </div>
+            </div>
         </div>
 
     </main>

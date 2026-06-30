@@ -39,6 +39,9 @@ def add_task():
     reminder = validate_reminder(data.get("reminder"))
     if isinstance(reminder, str):
         return jsonify(fail_message(reminder)), 400
+
+    if start >= end:
+        return jsonify(fail_message("Beginning date cannot be Equal to or Greater than Due date")), 400
     
     task = Task(data.get("title"), start, end, data.get("note"), reminder)
     return jsonify(manager.add_task(task)), 201

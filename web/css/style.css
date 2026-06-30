@@ -14,7 +14,7 @@
     --navyElectronic: #090C9B;
     --seaGrass: #639A88;
     --metallicGold: #DEB841;
-
+    --exitRed: #ff0000;
 }
 
 *{
@@ -196,17 +196,13 @@ main{
     align-self: flex-end;
     margin: 50px  200px 50px 0;
 }
-#backBTN {
-    padding: 10px 30px;
-    font-size: 14px;
-}
 
-.taskForm{
+.addTaskForm{
     display: none;
     transition: display 5s, background-color 5s;
 }
 
-.taskForm.activate{
+.addTaskForm.activate{
     display: block;
     background-color: var(--surface);
     padding: 15px;
@@ -215,10 +211,12 @@ main{
     margin-top: 10px;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
+    transition: display 5s, background-color 5s;
 }
 
 /*task form area (where all the entry element are)*/
-#taskForm{
+form{
+    background-color: var(--surface);
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(2, 1fr);
@@ -226,9 +224,40 @@ main{
 }
 
 .formBTN{
-    grid-column: 1 / -1;
+    grid-column: 1/-1;
     justify-self: end ;
 }
+
+.updateTaskForm.activate {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.updateTaskForm {
+    display: none;
+}
+
+.heading-text {
+    display: flex;
+}
+
+#exitBTN {
+    background: None;
+    color: var(--exitRed);
+    font-size: larger;
+    font-weight: bold;
+    margin-left: 30px;
+}
+#exitBTN:hover {
+    color: var(--darkGarnet);
+}
+
 
 .notificationContainer{
     display: none;
@@ -246,8 +275,38 @@ main{
     width: 100%;
 }
 
+.infoContainer.activate {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.infoContainer {
+    display: None;
+}
+
 .messageContainer{
-    display: none;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background1);
+    border: solid 2px var(--surface);
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    min-height: 25vh;
+    min-width: 50vh;
+}
+
+.messageContainer h2{
+    padding: 10px;
+}
+#confirmBTN {
+    margin: 10px;
 }
 
 button:hover{
