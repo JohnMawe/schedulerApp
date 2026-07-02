@@ -3,8 +3,8 @@
     --background: #F9FAFB;
     --background1: #F0F7F4;
     --surface: #397F00;
-    --surfacedark: #006620;
-    --surfacelight: #E9FFD6;
+    --surfaceDark: #006620;
+    --surfaceLight: #E9FFD6;
     --text: #202124;
     --text1: #3c4043;
     --copyright: #687878;
@@ -57,10 +57,26 @@ button{
     border-radius: 10px;
 }
 
+.page {
+    display: none;
+}
+
+.page.activate {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background1);
+    align-items: center;
+    border: solid 2px var(--surface);
+    border-left: none;
+    border-right: none;
+    height: auto;
+    width: 80%;
+}
+
 body{
     line-height: 1.5;
     background-color: var(--background);
-    height: 100vh;
+    height: 100%;
 }
 
 header{
@@ -70,8 +86,8 @@ header{
 
 nav {
     padding: 10px;
-    height: 60px;
-    width: 100vw;
+    min-height: 60px;
+    width: 100%;
     top: 0;
     align-content: center;
 }
@@ -107,12 +123,21 @@ main{
     display: none;
 }
 
+.taskHeader{
+    margin: 15px;
+}
+
+
+.addTaskBTN{
+    margin: 10px;
+}
 
 #tasksArea{
     display: block;
     width: auto;
     height: auto;
-    padding: 10px 0;
+    padding-bottom: 10px;
+    margin: 10px;
 }
 
 #tasksArea > div{
@@ -122,25 +147,13 @@ main{
 }
 
 #tasksArea > div:hover{
-    background-color: var(--surfacelight);
+    background-color: var(--surfaceLight);
     font-weight: bold;
 }
 
 .selectedContainer{
     display: none;
     transition: display 5s ease;
-}
-
-.selectedContainer.activate{
-    display: flex;
-    flex-direction: column;
-    background-color: var(--background1);
-    align-items: center;
-    border: solid 2px var(--surface);
-    border-left: none;
-    border-right: none;
-    height: 80vh;
-    width: 100%;
 }
 
 .selectedContainer.activate h1{
@@ -155,40 +168,29 @@ main{
     font-size: 25px;
 }
 
-.title {
-    background-color: var(--darkGarnet);
+.badge {
     color: var(--background);
     border-radius: 5px;
     font-size: 17px;
     letter-spacing: 3px;
     padding: 5px;
+}
+
+.title {
+    background-color: var(--darkGarnet);
 }
 
 .description {
     background-color: var(--navyElectronic);
-    color: var(--background);
-    border-radius: 5px;
-    font-size: 17px;
-    letter-spacing: 3px;
-    padding: 5px;
 }
 
 .begins {
     background-color: var(--seaGrass);
-    color: var(--background);
-    border-radius: 5px;
-    font-size: 17px;
-    letter-spacing: 3px;
-    padding: 5px;
 }
 
 .due {
     background-color: var(--metallicGold);
-    color: var(--background);
-    border-radius: 5px;
-    font-size: 17px;
-    letter-spacing: 3px;
-    padding: 5px;
+
 }
 
 
@@ -199,7 +201,6 @@ main{
 
 .addTaskForm{
     display: none;
-    transition: display 5s, background-color 5s;
 }
 
 .addTaskForm.activate{
@@ -211,7 +212,6 @@ main{
     margin-top: 10px;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
-    transition: display 5s, background-color 5s;
 }
 
 /*task form area (where all the entry element are)*/
@@ -236,6 +236,7 @@ form{
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(10px);
+    background:rgba(0,0,0,.25);
     z-index: 1000;
 }
 
@@ -248,7 +249,7 @@ form{
 }
 
 #exitBTN {
-    background: None;
+    background: none;
     color: var(--exitRed);
     font-size: larger;
     font-weight: bold;
@@ -258,21 +259,20 @@ form{
     color: var(--darkGarnet);
 }
 
-
 .notificationContainer{
     display: none;
 }
 
-.notificationContainer.activate {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--background1);
-    align-items: center;
-    border: solid 2px var(--surface);
-    border-left: none;
-    border-right: none;
-    height: 80vh;
-    width: 100%;
+.notificationHeader{
+    margin: 15px;
+}
+
+#notificationArea {
+    margin: 10px;
+}
+
+#notifBackBTN{
+    margin: 10px;
 }
 
 .infoContainer.activate {
@@ -287,7 +287,7 @@ form{
 }
 
 .infoContainer {
-    display: None;
+    display: none;
 }
 
 .messageContainer{
@@ -310,5 +310,5 @@ form{
 }
 
 button:hover{
-    background-color: var(--surfacedark);
+    background-color: var(--surfaceDark);
 }

@@ -10,32 +10,30 @@ import {
 } from "./UI/renderer.js";
 
 import {handleSaveAction, handleUpdateAction} from "./handlers/btnClickHandler.js";
-
-
-const selectedRenderArea = document.querySelector(".selectedContainer");
-// const selectedArea = document.querySelector("#selectedArea");
-const tasksContainer = document.querySelector(".tasksContainer");
-const tasksArea = document.querySelector("#tasksArea");
-const titleArea = document.querySelector("#titleArea");
-const descriptionArea = document.querySelector("#descriptionArea");
-const beginsArea = document.querySelector("#beginsArea");
-const dueArea = document.querySelector("#dueArea");
-
-const  addTaskForm = document.querySelector("#addTaskForm");
-const addTaskFormClass = document.querySelector(".addTaskForm");
-const updateTaskForm = document.querySelector("#updateTaskForm");
-const updateTaskFormClass = document.querySelector(".updateTaskForm");
-
-const notificationArea = document.querySelector("#notificationArea");
-const notificationContainer = document.querySelector(".notificationContainer");
-const messageArea = document.querySelector("#messageArea");
-
-const infoContainer = document.querySelector(".infoContainer");
+import {eleMent} from "./UI/uiElements.js";
+import {
+    hideHome, hideInfoContainer, hideNotifications,
+    hideTaskDetails,
+    hideUpdateTaskForm,
+    showHome, showInfoContainer,
+    showNotifications, showUpdateTaskForm,
+    toggleAddTaskForm
+} from "./UI/navigation.js";
 
 let getTaskId = null
 function handleGetTaskID(taskId) {
     if (taskId !==undefined && taskId !== " " && taskId !== null) {
         getTaskId = taskId;
+    }
+}
+
+function showMessage(type, text) {
+    showInfoContainer()
+    if (type === "success") {
+        renderSuccess(text, eleMent.messageArea);
+    }
+    if (type === "error") {
+        renderError(text, eleMent.messageArea);
     }
 }
 
@@ -49,21 +47,19 @@ window.addEventListener("load", async () => {
 async function showTasks() {
     const response = await getTasks();
     if (!response.success) {
-        infoContainer.classList.add("activate");
-        renderError(response.message, messageArea);
+        showMessage("error", response.message);
         return;
     }
     const data = response.data
 
     if (data.success) {
-        renderTasks(data.data, tasksArea, showTask, handleGetTaskID);
-        document.querySelector("#addTaskBTN").addEventListener("click",  () => {
-            addTaskFormClass.classList.toggle("activate");
+        renderTasks(data.data, eleMent.tasksArea, showTask, handleGetTaskID);
+        eleMent.addTaskBTN.addEventListener("click",  () => {
+            toggleAddTaskForm()
         });
 
     }else{
-        infoContainer.classList.add("activate");
-        renderError(data.message, messageArea);
+        showMessage("error", data.message);
     }
 }
 
@@ -77,21 +73,19 @@ async function showTask(id) {
 
     const response = await getTask(id);
     if (!response.success) {
-        infoContainer.classList.add("activate");
-        renderError(response.message, messageArea);
+        showMessage("error", response.message);
         return;
     }
     const data = response.data;
     if (data.success) {
-        rendersSelectedTask(data.data, titleArea, descriptionArea, beginsArea, dueArea);
+        rendersSelectedTask(data.data, eleMent.titleArea, eleMent.descriptionArea, eleMent.beginsArea, eleMent.dueArea);
     } else {
-        infoContainer.classList.add("activate");
-        renderError(data.message, messageArea);
+        showMessage("error", data.message);
     }
 }
 
 // Get task info from form, saves task
-addTaskForm.addEventListener("submit", async (event) => {
+eleMent.addTaskForm.addEventListener("submit", async (event) => {
     // Keeps the page reloading when the form is submitted, allowing us to handle the submission with JavaScript instead of the default browser behavior.
     event.preventDefault();
 
@@ -107,26 +101,21 @@ addTaskForm.addEventListener("submit", async (event) => {
     const response = await handleSaveAction(title, rawStart, rawEnd, note, reminder);
 
     if (!response.success) {
-        infoContainer.classList.add("activate");
-        renderError(response.message, messageArea);
+        showMessage("error", response.message);
         return;
     }
     const addNewTask = response.data
     if (addNewTask.success) {
-        addTaskForm.reset()
-        infoContainer.classList.add("activate");
-        renderSuccess(addNewTask.message, messageArea);
+        eleMent.addTaskForm.reset()
+        showMessage("success", addNewTask.message);
         await showTasks();
     } else {
-        infoContainer.classList.add("activate");
-        renderError(addNewTask.message, messageArea);
+        showMessage("error", addNewTask.message);
     }
-
-
 })
 
 //Updates task
-updateTaskForm.addEventListener("submit", async (event) => {
+eleMent.updateTaskForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const title = document.getElementById("newTitle").value;
@@ -143,21 +132,18 @@ updateTaskForm.addEventListener("submit", async (event) => {
         const response = await handleUpdateAction(id, title, rawStart, rawEnd, note);
 
         if(!response.success) {
-            infoContainer.classList.add("activate");
-            renderError(response.message, messageArea);
+            showMessage("error", response.message);
             return;
         }
         const updateNewTask = response.data
         if(updateNewTask.success) {
-            infoContainer.classList.add("activate");
-            renderSuccess(updateNewTask.message, messageArea);
-            updateTaskFormClass.classList.remove("activate")
-            updateTaskForm.reset()
+            showMessage("success", updateNewTask.message);
+            hideUpdateTaskForm()
+            eleMent.updateTaskForm.reset()
             await showTasks();
         }else {
-            infoContainer.classList.add("activate");
-            renderError(updateNewTask.message, messageArea);
-            updateTaskForm.reset()
+            showMessage("error", updateNewTask.message);
+            eleMent.updateTaskForm.reset()
         }
     })
 
@@ -171,68 +157,69 @@ async function deleteRender(){
 
     const response = await deleteTask(id);
     if (!response.success) {
-        infoContainer.classList.add("activate");
-        renderError(response.message, messageArea);
+        showMessage("error", response.message);
         return;
     }
 
     const data = response.data;
 
     if (data.success) {
-        infoContainer.classList.add("activate");
-        renderSuccess(data.message, messageArea);
+        showMessage("success", data.message);
+
         // Refresh task to show new update
         await showTasks()
         // Clear Details dashboard
-        selectedRenderArea.classList.remove("activate");
+        eleMent.selectedRenderArea.classList.remove("activate");
+        hideTaskDetails()
         // Activate home dashboard
-        tasksContainer.classList.remove("deactivate");
+        showHome()
     } else {
-        infoContainer.classList.add("activate");
-        renderError(data.message, messageArea);
+        showMessage("error", data.message);
     }
 }
 
 async function notification() {
     const response = await checkReminders();
     if (!response.success) {
-        infoContainer.classList.add("activate");
-        renderError(response.message, messageArea);
+        showMessage("error", response.message);
         return;
     }
     const data = response.data;
 
     if (data.success) {
-        renderReminders(data.data, notificationArea);
+        renderReminders(data.data, eleMent.notificationArea);
     } else {
-        infoContainer.classList.add("activate");
-        renderError(data.message, messageArea);
+        showMessage("error", data.message);
     }
 }
 
-document.querySelector("#deleteTaskBTN").addEventListener("click", deleteRender);
+eleMent.deleteTaskBTN.addEventListener("click", deleteRender);
 
-document.querySelector("#notificationLink").addEventListener("click", async () => {
-    selectedRenderArea.classList.remove("activate");
-    tasksContainer.classList.add("deactivate");
-    notificationContainer.classList.add("activate");
+eleMent.notificationLink.addEventListener("click", async () => {
+    hideTaskDetails()
+    hideHome()
+    showNotifications()
     await notification();
 });
 
-document.querySelector("#backBTN").addEventListener("click",  () => {selectedRenderArea.classList.remove("activate");
-    tasksContainer.classList.remove("deactivate"); });
+eleMent.backBTN.addEventListener("click",  () => {
+    hideTaskDetails()
+    showHome()
+});
 
-document.querySelector("#notifBackBTN").addEventListener("click",  () => {tasksContainer.classList.remove("deactivate");
-    notificationContainer.classList.remove("activate"); });
+eleMent.notifBackBTN.addEventListener("click",  () => {
+    showHome()
+    hideNotifications()
+});
 
-document.querySelector("#updateTaskBTN").addEventListener("click", () =>
-    updateTaskFormClass.classList.add("activate")
+eleMent.updateTaskBTN.addEventListener("click", () =>
+    showUpdateTaskForm()
 );
 
-document.querySelector("#exitBTN").addEventListener("click", () =>
-    updateTaskFormClass.classList.remove("activate")
-)
+eleMent.exitBTN.addEventListener("click", () =>
+    hideUpdateTaskForm()
+);
 
-document.querySelector("#confirmBTN").addEventListener("click", () =>
-    infoContainer.classList.remove("activate")
-)
+eleMent.confirmBTN.addEventListener("click", () =>
+    hideInfoContainer()
+);

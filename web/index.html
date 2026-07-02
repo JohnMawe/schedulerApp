@@ -20,7 +20,10 @@
     </header>
     <main>
         <div class="tasksContainer">
-            <h1>TO DO</h1>
+            <h1 class="taskHeader">TO DO</h1>
+            <div class="addTaskBTN">
+                <button id="addTaskBTN">+ADD TASK</button>
+            </div>
             <div id="tasksArea"></div>
 
             <div class="addTaskForm">
@@ -54,13 +57,13 @@
             </div>
         </div>
 
-        <div class="selectedContainer">
+        <div class="page selectedContainer">
             <h1>DETAILS</h1>
             <div id="selectedArea">
-                <div ><span class="title">Title:</span><span id ="titleArea"></span></div>
-                <div ><span class ="description">Description:</span><span id ="descriptionArea"></span></div>
-                <div><span class ="begins">Begins:</span><span id="beginsArea"></span></div>
-                <div><span class ="due">Due:</span><span id="dueArea"></span></div>
+                <div ><span class="badge title">Title:</span><span id ="titleArea"></span></div>
+                <div ><span class ="badge description">Description:</span><span id ="descriptionArea"></span></div>
+                <div><span class ="badge begins">Begins:</span><span id="beginsArea"></span></div>
+                <div><span class ="badge due">Due:</span><span id="dueArea"></span></div>
             </div>
 
             <div class="updateTaskForm">
@@ -101,8 +104,8 @@
             </div>
         </div>
 
-        <div class="notificationContainer">
-            <h2>NOTIFICATION</h2>
+        <div class="page notificationContainer">
+            <h2 class="notificationHeader">NOTIFICATION</h2>
             <div id="notificationArea"></div>
             <button id="notifBackBTN">Back</button>
         </div>

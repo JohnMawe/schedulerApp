@@ -1,25 +1,23 @@
 import {formatTimestamp} from "../utilities/dateFomatter.js";
-
-const selectedRenderArea = document.querySelector(".selectedContainer");
-const tasksContainer = document.querySelector(".tasksContainer");
-
+import {hideHome, showTaskDetails} from "./navigation.js";
+import {toSentenceCase, toTitleCase} from "../utilities/textFormatter.js";
 
 export function renderTasks(tasks, renderArea, getTaskByID, getID) {
     renderArea.innerHTML = "";
-    const buttonElement = document.createElement("button");
-    buttonElement.innerText = "+ADD TASK";
-    buttonElement.id = "addTaskBTN";
-    buttonElement.className = "addTaskBTN";
-    renderArea.append(buttonElement);
+    if (tasks.length === 0) {
+        const paragraphElement = document.createElement("p");
+        paragraphElement.innerText = "Click to Add Task";
+        renderArea.append(paragraphElement);
+    }
 
     for (const task of tasks) {
         const divElement = document.createElement("div");
-        divElement.innerText = task.title;
+        divElement.innerText = toTitleCase(task.title);
         divElement.addEventListener("click", () => {
             getTaskByID(task.id);
             getID(task.id);
-            selectedRenderArea.classList.add("activate");
-            tasksContainer.classList.add("deactivate");
+            showTaskDetails()
+            hideHome()
         })
         renderArea.append(divElement);
     }
@@ -34,8 +32,8 @@ export function rendersSelectedTask(task, ...renderArea) {
     const headerElement = document.createElement("p");
     const paragraphElement1 = document.createElement("p");
     const paragraphElement2 = document.createElement("p");
-    headerElement.innerText = task.title;
-    paragraphElement.innerText = task.note;
+    headerElement.innerText = toTitleCase(task.title);
+    paragraphElement.innerText = toSentenceCase(task.note);
     paragraphElement1.innerText = formatTimestamp(task.start_time);
 
     paragraphElement2.innerText = formatTimestamp(task.end_time);
