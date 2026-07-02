@@ -1,0 +1,314 @@
+:root {
+/*    All my variables */
+    --background: #F9FAFB;
+    --background1: #F0F7F4;
+    --surface: #397F00;
+    --surfaceDark: #006620;
+    --surfaceLight: #E9FFD6;
+    --text: #202124;
+    --text1: #3c4043;
+    --copyright: #687878;
+    --btnsurface: #00A334;
+    --btntxt: #B7FDFE;
+    --darkGarnet: #660000;
+    --navyElectronic: #090C9B;
+    --seaGrass: #639A88;
+    --metallicGold: #DEB841;
+    --exitRed: #ff0000;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+h1{
+    font-family: "Roboto Slab", serif;
+    font-weight: 700;
+    font-size: 60px;
+    color: var(--text);
+}
+
+h2{
+    font-family: "Roboto Slab", serif;
+    font-weight: 600;
+    color: var(--text);
+}
+
+p {
+    padding: 5px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+input[type="text"] {
+    font-family: "Roboto Slab", serif;
+    font-weight: 400;
+    color: var(--text1);
+}
+
+button{
+    background-color: var(--btnsurface);
+    border: none;
+    color: var(--btntxt);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.page {
+    display: none;
+}
+
+.page.activate {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background1);
+    align-items: center;
+    border: solid 2px var(--surface);
+    border-left: none;
+    border-right: none;
+    height: auto;
+    width: 80%;
+}
+
+body{
+    line-height: 1.5;
+    background-color: var(--background);
+    height: 100%;
+}
+
+header{
+    margin-bottom: 80px;
+    background-color: var(--surface);
+}
+
+nav {
+    padding: 10px;
+    min-height: 60px;
+    width: 100%;
+    top: 0;
+    align-content: center;
+}
+
+nav a {
+    margin-right: 30px;
+    float: right;
+    text-decoration: none;
+    color: var(--background);
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    place-items: center;
+}
+
+.tasksContainer{
+    display: block;
+    background-color: var(--background1);
+    justify-items: center;
+    align-content: center;
+    border: solid 2px var(--surface);
+    border-radius: 10px;
+    min-height: 30%;
+    min-width: 40%;
+    transition: display 5s;
+}
+
+.tasksContainer.deactivate{
+    display: none;
+}
+
+.taskHeader{
+    margin: 15px;
+}
+
+
+.addTaskBTN{
+    margin: 10px;
+}
+
+#tasksArea{
+    display: block;
+    width: auto;
+    height: auto;
+    padding-bottom: 10px;
+    margin: 10px;
+}
+
+#tasksArea > div{
+    padding-top: 5px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+#tasksArea > div:hover{
+    background-color: var(--surfaceLight);
+    font-weight: bold;
+}
+
+.selectedContainer{
+    display: none;
+    transition: display 5s ease;
+}
+
+.selectedContainer.activate h1{
+    margin: 30px 0;
+}
+
+.selectedContainer.activate div{
+    padding: 10px;
+}
+
+.selectedContainer.activate p{
+    font-size: 25px;
+}
+
+.badge {
+    color: var(--background);
+    border-radius: 5px;
+    font-size: 17px;
+    letter-spacing: 3px;
+    padding: 5px;
+}
+
+.title {
+    background-color: var(--darkGarnet);
+}
+
+.description {
+    background-color: var(--navyElectronic);
+}
+
+.begins {
+    background-color: var(--seaGrass);
+}
+
+.due {
+    background-color: var(--metallicGold);
+
+}
+
+
+.detailsButton {
+    align-self: flex-end;
+    margin: 50px  200px 50px 0;
+}
+
+.addTaskForm{
+    display: none;
+}
+
+.addTaskForm.activate{
+    display: block;
+    background-color: var(--surface);
+    padding: 15px;
+    width: 100%;
+    justify-items: center;
+    margin-top: 10px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+/*task form area (where all the entry element are)*/
+form{
+    background-color: var(--surface);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.formBTN{
+    grid-column: 1/-1;
+    justify-self: end ;
+}
+
+.updateTaskForm.activate {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    background:rgba(0,0,0,.25);
+    z-index: 1000;
+}
+
+.updateTaskForm {
+    display: none;
+}
+
+.heading-text {
+    display: flex;
+}
+
+#exitBTN {
+    background: none;
+    color: var(--exitRed);
+    font-size: larger;
+    font-weight: bold;
+    margin-left: 30px;
+}
+#exitBTN:hover {
+    color: var(--darkGarnet);
+}
+
+.notificationContainer{
+    display: none;
+}
+
+.notificationHeader{
+    margin: 15px;
+}
+
+#notificationArea {
+    margin: 10px;
+}
+
+#notifBackBTN{
+    margin: 10px;
+}
+
+.infoContainer.activate {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.infoContainer {
+    display: none;
+}
+
+.messageContainer{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background1);
+    border: solid 2px var(--surface);
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    min-height: 25vh;
+    min-width: 50vh;
+}
+
+.messageContainer h2{
+    padding: 10px;
+}
+#confirmBTN {
+    margin: 10px;
+}
+
+button:hover{
+    background-color: var(--surfaceDark);
+}

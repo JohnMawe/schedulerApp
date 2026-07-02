@@ -1,56 +1,77 @@
 import time
-from utilities.time_key import str_to_timestamp, now_timestamp
 from utilities.helpers import UI_divider
 from scheduler.task_manager import TaskManager
 from scheduler.reminders import check_reminders
 from scheduler.task import Task
+from utilities.validation import validate_datetime, validate_id, validate_reminder, validate_string
 
 # Get all user data safely
 def get_datetime():
     while True:
         try:
             dateTime = input("Enter date and time (YYYY-MM-DD HH:MM): ").strip()
-            dateTime = str_to_timestamp(dateTime)
-            if dateTime <= now_timestamp():
-                print("Date must be greater or equal to today's date")
-                raise ValueError 
+            dateTime = validate_datetime(dateTime)
+        
+            if not isinstance(dateTime, int):
+                raise ValueError(dateTime)
+            
             return dateTime
         
         except ValueError as error:
             print(error)
-    
+            
 def get_reminder():
     print("Reminder default is 15 minutes") 
     while True:
         try:
             reminder = input("\nRemind me before (Press Enter for Default): ").strip()
-            
-            if reminder:
-                reminder = int(reminder)
-                if reminder < 0:
-                    raise ValueError
-                return reminder
-            return 15    
-            
+            reminder = validate_reminder(reminder)
+            if not isinstance(reminder, int):
+                raise ValueError
+            return reminder
+                
         except ValueError:
-            print("\nInvalid Value. Reminder should be a number greater the zero")
+            print("\nInvalid Value. Reminder should be a number greater than zero")
 
 def get_id():
     while True:
         try:
-            task_id = int(input("\nEnter task ID: "))
+            task_id = input("\nEnter task ID: ")
+            task_id = validate_id(task_id)
+            
+            if not task_id:
+                raise ValueError("Value required")
+            if not isinstance(task_id, int):
+                raise ValueError
             return task_id
             
         except ValueError:
             print("\nInvalid Value. ID should be a number") 
- 
+
+def get_title():
+    while True:
+        title = input("Enter title: ")
+        title = validate_string(title)
+        if not isinstance(title, str):
+            print(str(title))
+            
+        return title
+        
+
+def get_note():
+    while True:
+        note = input("Note: ")
+        note = validate_string(note)
+        if not isinstance(note, str):
+            print(str(note))
+        
+        return note
+        
+
  #Validate data to update           
 def get_new_title():
     print("\nPress Enter to Skip")
-    new_title = input("Enter new title: ").strip()
-    if new_title:
-        return new_title
-    return None   
+    return get_title()
     
 def get_new_datetime(string):
     choice = input(f"\nSkip {string} time? (Y/N)").strip()
@@ -61,10 +82,7 @@ def get_new_datetime(string):
         
 def get_new_note():
     print("\nPress Enter to Skip")
-    new_note = input("Enter new note: ").strip()
-    if new_note:
-        return new_note
-    return None    
+    return get_note()
 
 #=================== M A I N ========================
 def main():
@@ -75,10 +93,11 @@ def main():
     while True:
         print(UI_divider("Notification"))
         
-        get_task = manager.get_task()
-        all_task = get_task["data"] 
+        all_task = manager.tasks
         
-        notifications = check_reminders(all_task)
+        print("0. Check Notification\n")
+        reminder = check_reminders(all_task)
+        notifications = reminder["data"]
         for notification in notifications:
             print(notification)
         
@@ -90,25 +109,35 @@ def main():
         print("6. Exit")
 
         choice = input("\nSelect option: ").strip()
+        
+        # Notification
+        if choice == "0":
+            if notifications:
+                for notification in notifications:
+                    print(notification)
+            else:
+                print("\nNo Available Notification")
+        
 
         # Add Task
         if choice == "1":
             print(f"\n{UI_divider("Add Task")}")
             
-            title = input("Task Title: ").strip()
+            title = get_title()
+            note = get_note()
             
             while True:
-                print("\nStart time >>")
+                print("\nSTART >>>")
                 start = get_datetime()
-                print("\nEnd time >>")
+    
+                print("\nEND >>>")
                 end = get_datetime()
                 
                 if start < end:
                     break
                 else:
                     print("Start time must be before End time. Try again...\n")
-                
-            note = input("Note: ").strip()
+                    
             reminder = get_reminder()
 
             task = Task(title, start, end, note, reminder)
@@ -131,19 +160,19 @@ def main():
                 
                 if choice == "1":
                     try:
-                        task_id = int(input("\nEnter task ID number: "))
+                        task_id = get_id()
                         get_task = manager.get_task(task_id)
                         if get_task["success"]:
-                            print(f"{get_task['message']}\n{get_task['data']}")
+                            print(f"{get_task['message']}\n{get_task['CLI_data']}")
                         else:
                             print(get_task["message"])
             
-                    except ValueError:
-                        print("\nInvalid Value. ID should be a number") 
+                    except ValueError as error:
+                        print(f"\n{error}" ) 
                     
                 elif choice == "2":
                     get_task = manager.get_task()
-                    all_task = get_task["data"]
+                    all_task = get_task["CLI_data"]
                     print(UI_divider("All Tasks"))
                     for task in all_task:
                         print(f"\n{task}")
@@ -194,3 +223,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

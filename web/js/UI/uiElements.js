@@ -1,0 +1,26 @@
+export const eleMent = {
+    selectedRenderArea: document.querySelector(".selectedContainer"),
+    tasksContainer: document.querySelector(".tasksContainer"),
+    tasksArea: document.querySelector("#tasksArea"),
+    titleArea: document.querySelector("#titleArea"),
+    descriptionArea: document.querySelector("#descriptionArea"),
+    beginsArea: document.querySelector("#beginsArea"),
+    dueArea: document.querySelector("#dueArea"),
+    addTaskForm: document.querySelector("#addTaskForm"),
+    addTaskFormClass: document.querySelector(".addTaskForm"),
+    updateTaskForm: document.querySelector("#updateTaskForm"),
+    updateTaskFormClass: document.querySelector(".updateTaskForm"),
+    notificationArea: document.querySelector("#notificationArea"),
+    notificationContainer: document.querySelector(".notificationContainer"),
+    messageArea: document.querySelector("#messageArea"),
+    infoContainer: document.querySelector(".infoContainer"),
+    addTaskBTN: document.querySelector("#addTaskBTN"),
+    deleteTaskBTN: document.querySelector("#deleteTaskBTN"),
+    notificationLink: document.querySelector("#notificationLink"),
+    backBTN: document.querySelector("#backBTN"),
+    notifBackBTN: document.querySelector("#notifBackBTN"),
+    updateTaskBTN: document.querySelector("#updateTaskBTN"),
+    exitBTN: document.querySelector("#exitBTN"),
+    confirmBTN: document.querySelector("#confirmBTN")
+
+}

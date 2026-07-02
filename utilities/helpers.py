@@ -11,13 +11,14 @@ def fail_message(message:str, data=None):
         "data": data
     }
 
-def success_message(message: str, data=None):
+def success_message(message: str, data=None, CLI_data=None):
     return {
         "success": True,
         "message": message,
-        "data": data
+        "data": data,
+        "CLI_data": CLI_data
     }
-  
+
 def sample_task():
     task = Task(
             "Study Math",

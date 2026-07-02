@@ -1,4 +1,3 @@
-from scheduler.task_manager import TaskManager
 from scheduler.reminders import check_reminders
 from utilities.time_key import str_to_timestamp
 from utilities.helpers import sample_task
@@ -22,7 +21,7 @@ def test_task_reminder_state(manager):
     assert notified["in_progress"] is False
     assert notified["completed"] is False
 
-def test_task_inprogress_state(manager):
+def test_task_progress_state(manager):
     tasks = all_tasks(manager)
     
     current_time = str_to_timestamp("2026-05-05 12:20")
@@ -52,10 +51,12 @@ def test_reminder_doesnot_spam(manager):
     tasks = all_tasks(manager)
     current_time = str_to_timestamp("2026-05-05 12:00")
     reminders = check_reminders(tasks, current_time)
+    reminder = reminders["data"]
 
-    assert len(reminders) is 1
-    assert "Reminder" in reminders[0]
+    assert len(reminder) is 1
+    assert "Reminder" in reminder[0]
     
     reminders = check_reminders(tasks, current_time)
+    reminder = reminders["data"]
 
-    assert len(reminders) is 0
+    assert len(reminder) is 0

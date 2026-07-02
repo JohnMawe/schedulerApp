@@ -39,24 +39,41 @@ class TaskManager:
         if not save_task["success"]:
             return save_task
             
-        message = f"{task.Id} saved successfully"
+        message = f"Task '{task.title}' saved successfully"
         return success_message(message)
   
     def get_task(self, task_Id=None):
         if task_Id:
             for task in self.tasks:
                 if task.Id == task_Id:
-                    data = task
+                    data = {
+                        "id": task.Id,
+                        "title": task.title,
+                        "start_time": task.start_time,
+                        "end_time": task.end_time,
+                        "note": task.note
+                    }
+                    CLI_data = str(task)
                     message = f"Got task: {task.Id}"
-                    return success_message(message, data)
+                    return success_message(message, data, CLI_data)
                     
-            message = f"Task with ID: {task_Id} dose not exist"
+            message = f"Task ID = {task_Id} dose not exist"
             return fail_message(message)
             
         else:
-            data = self.tasks.copy()
+            tasks = self.tasks.copy()
+            data = [{
+                        "id": task.Id,
+                        "title": task.title,
+                        "start_time": task.start_time,
+                        "end_time": task.end_time,
+                        "note": task.note
+                    }
+                    for task in tasks]
+
+            CLI_data = [str(task) for task in tasks]
             message = "Got all Tasks"
-            return success_message(message, data)
+            return success_message(message, data, CLI_data)
             
    
     def update_task(self, task_Id, new_title=None, new_start_time=None, new_end_time=None, new_note=None, current_time=None):
@@ -103,7 +120,7 @@ class TaskManager:
                 return success_message(message)
 
 
-        message = f"{task_Id} does not exist"
+        message = f"Task ID = {task_Id} does not exist"
         return fail_message(message)
         
   
@@ -112,7 +129,7 @@ class TaskManager:
             if task.Id == task_Id:
                 self.tasks.remove(task)
                 self.save_task()
-                message = f"{task_Id} deleted successfully"
+                message = f"Task '{task.title}' deleted successfully"
                 return success_message(message)
 
         message = f"Failed to delete {task_Id}"
@@ -134,7 +151,7 @@ class TaskManager:
             return success_message(message)
             
         except Exception as error:
-            message = f"Faield to Save data: {error}"
+            message = f"Failed to Save data: {error}"
             write_log("ERROR", message)
             return fail_message(message)
             
@@ -178,12 +195,12 @@ class TaskManager:
                 write_log("INFO", "Empty task file recreated")
                 
             except Exception as error:
-                write_log("ERROR", f"Backup Faield {error}")
+                write_log("ERROR", f"Backup Failed {error}")
             self.tasks = []
             self.next_Id = 1
         
         except FileNotFoundError as error:
-            write_log("ERROR", f"Data Loading Faield {error}")
+            write_log("ERROR", f"Data Loading Failed \nDetailed: {error}")
             self._create_empty_file()
             self.task = []
             self.next_Id = 1
@@ -195,7 +212,7 @@ if __name__ == "__main__":
     #print(manager.add_task(task1))
     #for task in manager.get_task():
         #print(task)
-    #print(manager.update_task(8, new_title="fkff"))
+    #print(manager.update_task(8, new_title="main"))
     #print(manager.get_task(1))
     task_Id = [1,2,3,4,5,6,7]
     #[print(manager.remove_task(Id)) for Id in task_Id]

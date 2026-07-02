@@ -1,4 +1,5 @@
-from utilities.time_key import str_to_timestamp, timestamp_to_local
+from utilities.time_key import timestamp_to_local
+from utilities.recovery_logger import write_log
 
 class Task:
     def __init__(self, title, start_time: int, end_time: int, note,reminder_before=0, Id=None, notified=None):
@@ -6,22 +7,30 @@ class Task:
         self.title = title
         
         if not isinstance(start_time, int):
-            raise TypeError("start time must be time stamp")
+            message = "start time must be time stamp"
+            write_log("ERROR", message)
+            raise TypeError(message)
             
         if not isinstance(end_time, int):
-            raise TypeError("start time must be time stamp")
+            message = "start time must be time stamp"
+            write_log("ERROR", message)
+            raise TypeError(message)
             
         self.start_time = start_time
         self.end_time = end_time
 
         if self.start_time >= self.end_time:
-            raise ValueError("Start time must be before End time")
+            message = "Start time must be before End time"
+            write_log("ERROR", message)
+            raise ValueError(message)
 
         self.note = note
         self.reminder_before = reminder_before
         
         if reminder_before < 0:
-            raise ValueError("Reminder must be >= 0 minutes")
+            message = "Reminder must be >= 0 minutes"
+            write_log("ERROR", message)
+            raise ValueError(message)
         
         if notified is None:
             self.notified = {
