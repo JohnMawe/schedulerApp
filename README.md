@@ -23,7 +23,20 @@ The application allows users to create, update, delete, and manage tasks through
 
 ## 📸 Screenshots
 
-> Screenshots will be added soon.
+### Home page
+![Home page](assets/screenshots/home.png)
+
+---
+### Add Task
+![Add task](assets/screenshots/add-task.png)
+
+---
+### Details
+![Details](assets/screenshots/details.png)
+
+---
+### Notifications
+![Notifications](assets/screenshots/notification.png)
 
 ---
 
